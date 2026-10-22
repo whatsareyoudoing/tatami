@@ -7,6 +7,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('frontend/welcome');
 });
+Route::get('/produk', function () {
+    return view('frontend/produk');
+});
+Route::get('/tentang', function () {
+    return view('frontend/tentang');
+});
+Route::get('/artikel', function () {
+    return view('frontend/artikel');
+});
+Route::get('/kontak', function () {
+    return view('frontend/kontak');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');

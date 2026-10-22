@@ -1,9 +1,9 @@
 @extends('app')
 
 @section('content')
-<nav class="navbar navbar-expand-lg bg-white shadow sticky-top">
+<nav class="navbar navbar-expand-lg bg-white shadow-2xs sticky-top">
   <div class="container">
-    <a class="navbar-brand fw-bold text-primary d-none d-lg-block" href="#">
+    <a class="navbar-brand fw-bold text-primary d-none d-lg-block" href="{{ url('/') }}">
         <img src="https://tatamiindonesia.id/wp-content/uploads/2025/06/cropped-icon-website-1.png" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,22 +12,22 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav fw-bold gap-4 fs-6">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Beranda</a>
+          <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Beranda</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Produk</a>
+          <a class="nav-link" href="{{ url('/produk') }}">Produk</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Tentang</a>
+          <a class="nav-link" href="{{ url('/tentang') }}">Tentang</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Custom Tatami</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Kontak</a>
+          <a class="nav-link" href="{{ url('/kontak') }}">Kontak</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Artikel</a>
+          <a class="nav-link" href="{{ url('/artikel') }}">Artikel</a>
         </li>
       </ul>
     </div>
