@@ -22,7 +22,7 @@
           <a class="nav-link" href="{{ url('/tentang') }}">Tentang</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Custom Tatami</a>
+          <a class="nav-link" href="{{ url('/custom-tatami') }}">Custom Tatami</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url('/kontak') }}">Kontak</a>
@@ -119,7 +119,7 @@
 
 
   <!-- Footer -->
-  <footer class="bg-white text-dark pt-5 pb-4">
+  <footer class="bg-white text-dark pt-5 pb-4 border-top">
     <div class="container">
       <div class="row">
         <div class="col-md-4 mb-4">

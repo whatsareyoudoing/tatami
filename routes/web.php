@@ -19,6 +19,9 @@ Route::get('/artikel', function () {
 Route::get('/kontak', function () {
     return view('frontend/kontak');
 });
+Route::get('/custom-tatami', function () {
+    return view('frontend/custom');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');
