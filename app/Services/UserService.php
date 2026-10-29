@@ -25,6 +25,9 @@ class UserService
                 'password' => $data['password'], // di-hash otomatis oleh cast 'hashed' di model User
             ]);
 
+            // Akun staf dibuat oleh admin, jadi tidak perlu verifikasi kode email
+            $user->markEmailAsVerified();
+
             if (!empty($data['role'])) {
                 $user->roles()->attach($data['role']);
             }

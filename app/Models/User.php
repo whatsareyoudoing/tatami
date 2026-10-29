@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Services\EmailVerificationService;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+// MustVerifyEmail: route dengan middleware 'verified' hanya bisa dibuka setelah email_verified_at terisi
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -54,6 +57,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'user_roles');
     }
 
+    public function verificationCode()
+    {
+        return $this->hasOne(EmailVerificationCode::class);
+    }
+
+    // Bawaan Laravel mengirim link verifikasi; aplikasi ini memakai kode 6 digit
+    public function sendEmailVerificationNotification(): void
+    {
+        app(EmailVerificationService::class)->send($this);
+    }
+
     // 🔐 PERMISSION CHECK
     public function hasPermission(string $permission): bool
     {
@@ -69,5 +83,30 @@ class User extends Authenticatable
         return $this->roles
             ->pluck('name')
             ->contains($role);
+    }
+
+    // User::customers() = pembeli, User::staff() = selain pembeli (admin, editor, atau belum punya role)
+    public function scopeCustomers(Builder $query): void
+    {
+        $query->whereHas('roles', fn ($q) => $q->where('name', Role::CUSTOMER));
+    }
+
+    public function scopeStaff(Builder $query): void
+    {
+        $query->whereDoesntHave('roles', fn ($q) => $q->where('name', Role::CUSTOMER));
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->hasRole(Role::CUSTOMER);
+    }
+
+    // 🔐 Admin aktif terakhir tidak boleh dinonaktifkan/diturunkan, supaya sistem tidak terkunci tanpa admin
+    public function isLastActiveAdmin(): bool
+    {
+        return $this->hasRole('admin')
+            && static::where('status', 'aktif')
+                ->whereHas('roles', fn ($query) => $query->where('name', 'admin'))
+                ->count() <= 1;
     }
 }

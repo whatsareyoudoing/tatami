@@ -5,7 +5,8 @@
     // can    = permission yang dibutuhkan (null = semua user login)
     $menu = [
         ['label' => 'Dashboard', 'icon' => 'fa-home',    'route' => 'dashboard',      'active' => 'dashboard',  'can' => null],
-        ['label' => 'Pengguna',  'icon' => 'fa-users',   'route' => 'user.index',     'active' => 'user.*',     'can' => 'view_user'],
+        ['label' => 'Pengguna',  'icon' => 'fa-user-shield', 'route' => 'user.index',     'active' => 'user.*',     'can' => 'view_user'],
+        ['label' => 'Pelanggan', 'icon' => 'fa-users',       'route' => 'customer.index', 'active' => 'customer.*', 'can' => 'view_customer'],
         ['label' => 'Kategori',  'icon' => 'fa-archive', 'route' => 'category.index', 'active' => 'category.*', 'can' => 'view_category'],
         ['label' => 'Produk',    'icon' => 'fa-box',     'route' => 'product.index',  'active' => 'product.*',  'can' => 'view_product'],
     ];

@@ -27,14 +27,19 @@ class UserController extends Controller implements HasMiddleware
         protected UserService $userService
     ) {}
 
+    // Menu Pengguna khusus staf (admin, editor). Customer ada di menu Pelanggan.
     public function index(){
 
-        $users = User::select('id','name', 'username','email')->where('status','aktif')->paginate(10);
+        $users = User::select('id','name', 'username','email')
+            ->staff()
+            ->with('roles:id,name')
+            ->where('status','aktif')
+            ->paginate(10);
         return view('backend.user', compact('users'));
     }
 
     public function create(){
-        $roles = Role::select('id','name')->get();
+        $roles = Role::staff()->select('id','name')->get();
         return view('backend.userCreate',compact('roles'));
     }
 
@@ -45,7 +50,7 @@ class UserController extends Controller implements HasMiddleware
     }
 
     public function edit(User $user){
-        $roles = Role::select('id','name')->get();
+        $roles = Role::staff()->select('id','name')->get();
         $userRoleId = $user->roles()->first()?->id;
 
         return view('backend.userEdit',compact('user', 'roles', 'userRoleId'));
@@ -65,6 +70,11 @@ class UserController extends Controller implements HasMiddleware
         if (auth()->id() === $user->id) {
             return redirect()->route('user.index')
                 ->with('error', 'Anda tidak bisa menonaktifkan akun sendiri.');
+        }
+
+        if ($user->isLastActiveAdmin()) {
+            return redirect()->route('user.index')
+                ->with('error', 'Admin terakhir tidak bisa dinonaktifkan.');
         }
 
         $this->userService->deleteUser($user);

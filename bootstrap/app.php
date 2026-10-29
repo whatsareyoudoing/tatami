@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'active' => \App\Http\Middleware\EnsureUserIsActive::class,
         ]);
+
+        // User yang sudah login lalu membuka /login: admin/editor ke dashboard, customer ke beranda
+        $middleware->redirectUsersTo(fn (\Illuminate\Http\Request $request) => $request->user()->can('access_admin')
+            ? route('dashboard')
+            : route('home'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

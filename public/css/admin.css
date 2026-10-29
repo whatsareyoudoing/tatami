@@ -14,6 +14,7 @@
 /* ---------- Utilitas warna ---------- */
 .bg-tatami { background-color: var(--tatami); }
 .text-tatami { color: var(--tatami); }
+.color-tatami { color: var(--tatami); } /* nama kelas lama yang dipakai navbar frontend */
 
 /* ---------- Tombol ---------- */
 .btn-tatami {

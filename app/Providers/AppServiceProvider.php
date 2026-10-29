@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasPermission($ability) ?: null;
         });
         Paginator::useBootstrapFive();
+
+        // {user} di route admin hanya boleh staf, {customer} hanya boleh pembeli.
+        // ID di luar itu langsung 404, jadi menu Pengguna tidak bisa dipakai untuk mengubah customer (dan sebaliknya).
+        Route::bind('user', fn (string $value) => User::staff()->findOrFail($value));
+        Route::bind('customer', fn (string $value) => User::customers()->findOrFail($value));
 
         // @asset('css/admin.css') -> /css/admin.css?v=1730000000
         // Versi = waktu file terakhir diubah, jadi browser boleh cache lama (lihat public/.htaccess)

@@ -18,6 +18,7 @@
                         <th>Nama</th>
                         <th>Username</th>
                         <th>Email</th>
+                        <th>Role</th>
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>
@@ -28,6 +29,16 @@
                             <td class="fw-semibold">{{ $user->name }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>
+                                @foreach ($user->roles as $role)
+                                    <span @class([
+                                        'badge',
+                                        'text-bg-success' => $role->name === 'admin',
+                                        'text-bg-primary' => $role->name === 'editor',
+                                        'text-bg-secondary' => !in_array($role->name, ['admin', 'editor']),
+                                    ])>{{ $role->label }}</span>
+                                @endforeach
+                            </td>
                             <td class="text-center text-nowrap">
                                 @can('update_user')
                                     <a href="{{ route('user.edit', $user) }}" class="btn btn-sm btn-icon" title="Edit"><i class="fas fa-edit"></i></a>
@@ -39,7 +50,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">Belum ada pengguna.</td>
+                            <td colspan="6" class="text-center text-muted py-4">Belum ada pengguna.</td>
                         </tr>
                     @endforelse
                 </tbody>

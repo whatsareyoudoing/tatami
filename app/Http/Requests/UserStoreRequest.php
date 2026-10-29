@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserStoreRequest extends FormRequest
 {
@@ -27,7 +29,8 @@ class UserStoreRequest extends FormRequest
             'email' => ['required', 'email', 'unique:users,email'],
             'username' => ['required', 'string', 'unique:users,username'],
             'password' => ['required','min:8'],
-            'role' => ['required', 'exists:roles,id'],
+            // Hanya role staf; akun customer dibuat lewat pendaftaran di website
+            'role' => ['required', Rule::exists('roles', 'id')->whereNot('name', Role::CUSTOMER)],
         ];
     }
 }
