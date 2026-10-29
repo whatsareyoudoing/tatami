@@ -22,6 +22,18 @@ class RbacSeeder extends Seeder
             'update_user',
             'delete_user',
             'view_user',
+
+            'create_category',
+            'update_category',
+            'delete_category',
+            'view_category',
+
+            'create_product',
+            'update_product',
+            'delete_product',
+            'view_product',
+
+
         ];
 
         foreach ($permissions as $perm) {
@@ -43,7 +55,8 @@ class RbacSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'username' =>'admin',
-                'password' => Hash::make('admin')
+                'password' => Hash::make('admin'),
+                'status' =>'aktif'
             ]
         );
 
