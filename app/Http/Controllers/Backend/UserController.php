@@ -8,10 +8,21 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:view_user', only: ['index']),
+            new Middleware('can:create_user', only: ['create', 'store']),
+            new Middleware('can:update_user', only: ['edit', 'update']),
+            new Middleware('can:delete_user', only: ['destroy']),
+        ];
+    }
+
     public function __construct(
         protected UserService $userService
     ) {}
@@ -30,7 +41,7 @@ class UserController extends Controller
     public function store(UserStoreRequest $request){
         $this->userService->createUser($request->validated());
 
-        return redirect()->route('user')->with('success', 'Pengguna berhasil dibuat.');
+        return redirect()->route('user.index')->with('success', 'Pengguna berhasil dibuat.');
     }
 
     public function edit(User $user){
@@ -45,20 +56,20 @@ class UserController extends Controller
 
         $this->userService->updateUser($request->validated(), $user);
 
-        return redirect()->route('user')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('user.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     public function destroy(User $user)
     {
         // Proteksi: Jangan biarkan user menonaktifkan dirinya sendiri
         if (auth()->id() === $user->id) {
-            return redirect()->route('user')
+            return redirect()->route('user.index')
                 ->with('error', 'Anda tidak bisa menonaktifkan akun sendiri.');
         }
 
         $this->userService->deleteUser($user);
 
-        return redirect()->route('user')
+        return redirect()->route('user.index')
             ->with('success', 'User berhasil dinonaktifkan.');
     }
 

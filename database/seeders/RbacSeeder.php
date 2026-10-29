@@ -7,7 +7,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class RbacSeeder extends Seeder
 {
@@ -55,7 +54,7 @@ class RbacSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'username' =>'admin',
-                'password' => Hash::make('admin'),
+                'password' => 'admin', // di-hash otomatis oleh cast 'hashed' di model User
                 'status' =>'aktif'
             ]
         );

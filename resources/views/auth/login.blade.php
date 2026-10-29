@@ -1,38 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Manual Laravel 12</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+@extends('layouts.guest')
 
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+@section('title', 'Login')
 
-        @error('username')
-            <div class="bg-red-100 text-red-700 p-2 rounded mb-4 text-sm">
-                {{ $message }}
-            </div>
-        @enderror
-
-        <form action="{{ url('/login') }}" method="POST">
-            @csrf {{-- WAJIB untuk keamanan dari serangan CSRF --}}
-
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">username</label>
-                <input type="text" name="username" value="{{ old('username') }}" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+@section('content')
+    <div class="card border-0 shadow-sm rounded-4 w-100" style="max-width: 400px;">
+        <div class="card-body p-4 p-sm-5">
+            <div class="text-center mb-4">
+                <h1 class="h4 fw-bold text-tatami mb-1">Tatami Indonesia</h1>
+                <p class="text-muted small mb-0">Masuk ke panel admin</p>
             </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                <input type="password" name="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
+            <form action="{{ url('/login') }}" method="POST">
+                @csrf {{-- WAJIB untuk keamanan dari serangan CSRF --}}
 
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Login</button>
-        </form>
+                <x-admin.input name="username" label="Username" required autofocus autocomplete="username" />
+                <x-admin.input name="password" type="password" label="Password" required autocomplete="current-password" wrapper="mb-4" />
+
+                <button type="submit" class="btn btn-tatami w-100 py-2">
+                    <i class="fas fa-sign-in-alt me-1"></i> Masuk
+                </button>
+            </form>
+        </div>
     </div>
-
-</body>
-</html>
+@endsection

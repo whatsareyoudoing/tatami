@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('sku')->unique()->nullable();
             $table->string('nama');
             $table->string('slug')->unique();
-            $table->integer('harga_dasar');
-            $table->integer('harga_coret')->nullable();
+            // Harga berlaku untuk semua warna (varian)
+            $table->unsignedInteger('harga_dasar');
+            $table->unsignedInteger('harga_coret')->nullable();
             $table->text('deskripsi')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

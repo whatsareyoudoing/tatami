@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-gray-100 p-10">
+{{-- User login tampil di dalam panel admin, selain itu pakai layout polos --}}
+@extends(auth()->check() ? 'layouts.admin' : 'layouts.guest')
 
-    <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-4">403</h1>
+@section('title', 'Akses Ditolak')
 
-        <p class="text-gray-700 mb-6">Halo, <strong>{{ Auth::user()->name }}</strong> ({{ Auth::user()->email }})</p>
+@section('content')
+    <div class="text-center py-5">
+        <div class="display-1 fw-bold text-tatami">403</div>
+        <h1 class="h4 fw-bold">Anda tidak punya akses ke halaman ini</h1>
+        <p class="text-muted mb-4">Hubungi admin jika Anda merasa seharusnya bisa membuka halaman ini.</p>
 
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
-                Logout
-            </button>
-        </form>
+        @auth
+            <a href="{{ route('dashboard') }}" class="btn btn-tatami"><i class="fas fa-home me-1"></i> Kembali ke Dashboard</a>
+        @else
+            <a href="{{ route('login') }}" class="btn btn-tatami"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+        @endauth
     </div>
-
-</body>
-</html>
+@endsection

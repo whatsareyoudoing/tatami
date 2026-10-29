@@ -17,6 +17,7 @@ return new class extends Migration
             // Nullable agar foto bisa jadi foto umum (tidak terikat varian tertentu)
             $table->foreignId('product_variant_id')->nullable()->constrained()->nullOnDelete();
             $table->string('image');
+            $table->unsignedInteger('urutan')->default(0); // urutan terkecil = foto utama
             $table->timestamps();
         });
     }

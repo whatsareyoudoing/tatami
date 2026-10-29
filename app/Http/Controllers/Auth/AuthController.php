@@ -18,7 +18,8 @@ class AuthController extends Controller
                 'password' => ['required']
         ]);
 
-        if (Auth::attempt($credentials)) {
+        // Hanya user berstatus aktif yang boleh login
+        if (Auth::attempt([...$credentials, 'status' => 'aktif'])) {
             $request->session()->regenerate();
 
             return redirect()->intended('/dashboard');

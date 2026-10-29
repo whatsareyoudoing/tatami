@@ -1,0 +1,108 @@
+/* =========================================================
+   Admin Panel Tatami Indonesia
+   Warna utama cukup diubah di :root, semua komponen ikut.
+   ========================================================= */
+
+:root {
+    --tatami: #245237;
+    --tatami-hover: #1b3f2a;
+    --tatami-light: #e8f1ec;
+    --tatami-rgb: 36, 82, 55;
+    --admin-navbar-height: 56px;
+}
+
+/* ---------- Utilitas warna ---------- */
+.bg-tatami { background-color: var(--tatami); }
+.text-tatami { color: var(--tatami); }
+
+/* ---------- Tombol ---------- */
+.btn-tatami {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--tatami);
+    --bs-btn-border-color: var(--tatami);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--tatami-hover);
+    --bs-btn-hover-border-color: var(--tatami-hover);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--tatami-hover);
+    --bs-btn-active-border-color: var(--tatami-hover);
+    --bs-btn-disabled-bg: var(--tatami);
+    --bs-btn-disabled-border-color: var(--tatami);
+    --bs-btn-focus-shadow-rgb: var(--tatami-rgb);
+}
+
+/* Tombol ikon di kolom aksi tabel (edit, hapus) */
+.btn-icon {
+    --bs-btn-color: var(--tatami);
+    --bs-btn-hover-color: var(--tatami);
+    --bs-btn-hover-bg: var(--tatami-light);
+    --bs-btn-active-bg: var(--tatami-light);
+    --bs-btn-padding-x: .5rem;
+}
+.btn-icon.text-danger:hover { background-color: #fbeaea; }
+
+/* ---------- Form ---------- */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--tatami);
+    box-shadow: 0 0 0 .25rem rgba(var(--tatami-rgb), .2);
+}
+.form-check-input:checked {
+    background-color: var(--tatami);
+    border-color: var(--tatami);
+}
+.form-check-input:focus {
+    border-color: var(--tatami);
+    box-shadow: 0 0 0 .25rem rgba(var(--tatami-rgb), .2);
+}
+
+/* ---------- Pagination ---------- */
+.pagination {
+    --bs-pagination-color: var(--tatami);
+    --bs-pagination-hover-color: var(--tatami-hover);
+    --bs-pagination-hover-bg: var(--tatami-light);
+    --bs-pagination-focus-color: var(--tatami-hover);
+    --bs-pagination-focus-box-shadow: 0 0 0 .25rem rgba(var(--tatami-rgb), .2);
+    --bs-pagination-active-bg: var(--tatami);
+    --bs-pagination-active-border-color: var(--tatami);
+    margin-bottom: 0;
+}
+
+/* ---------- Navbar ---------- */
+.admin-navbar { min-height: var(--admin-navbar-height); }
+
+/* ---------- Sidebar ---------- */
+.admin-sidebar .nav-link {
+    color: var(--bs-body-color);
+    border-radius: .5rem;
+}
+.admin-sidebar .nav-link:hover {
+    background-color: var(--tatami-light);
+    color: var(--tatami);
+}
+.admin-sidebar .nav-link.active {
+    background-color: var(--tatami);
+    color: #fff;
+}
+
+/* Desktop: sidebar menempel di kiri, tingginya setinggi layar */
+@media (min-width: 768px) {
+    .admin-sidebar {
+        min-height: calc(100vh - var(--admin-navbar-height));
+    }
+    .admin-sidebar .offcanvas-md {
+        position: sticky;
+        top: var(--admin-navbar-height);
+        max-height: calc(100vh - var(--admin-navbar-height));
+        overflow-y: auto;
+    }
+}
+
+/* ---------- Gambar ---------- */
+.thumb {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+}
+.thumb-sm { width: 38px; height: 38px; }
+.thumb-lg { width: 100px; height: 100px; }

@@ -3,70 +3,64 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:view_category', only: ['index']),
+            new Middleware('can:create_category', only: ['create', 'store']),
+            new Middleware('can:update_category', only: ['edit', 'update']),
+            new Middleware('can:delete_category', only: ['destroy']),
+        ];
+    }
+
     public function index()
     {
         // Tampilkan semua kategori, urutkan dari yang terbaru
-        $categories = Category::select('id','name')->paginate(10);
+        $categories = Category::select('id', 'name')->latest()->paginate(10);
         return view('backend.category', compact('categories'));
     }
 
-    public function create(){
+    public function create()
+    {
         return view('backend.categoryCreate');
     }
 
-
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name',
-        ]);
+        Category::create($request->validated());
 
-        Category::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-        ]);
-
-        return redirect()->route('category')->with('success', 'Kategori berhasil ditambahkan!');
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
-    public function edit($id){
-        $category=Category::select('id','name')->where('id',$id)->first();
-
-        return view('backend.categoryEdit',compact('category'));
+    public function edit(Category $category)
+    {
+        return view('backend.categoryEdit', compact('category'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        // 1. Validasi: Abaikan ID kategori ini saat cek nama unique
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-        ]);
+        $category->update($request->validated());
 
-        // 2. Gunakan method update(), bukan create()
-        $category->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-        ]);
-
-        // 3. Redirect ke route yang benar (sesuaikan nama route di sistemmu)
-        return redirect()->route('category')->with('success', 'Kategori berhasil diperbarui!');
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil diperbarui!');
     }
 
     public function destroy(Category $category)
     {
-        // Karena di tabel products kita pakai restrictOnDelete(),
-        // pastikan kita handle error jika kategori masih dipakai produk
-        try {
-            $category->delete();
-            return redirect()->route('category')->with('success', 'Kategori berhasil dihapus!');
-        } catch (\Exception $e) {
-            return redirect()->route('category')->with('error', 'Kategori tidak bisa dihapus karena masih ada produk di dalamnya!');
+        // Tabel products memakai restrictOnDelete(), jadi cek dulu sebelum menghapus.
+        // withTrashed: produk yang sudah di-soft delete tetap mengunci kategori di DB.
+        if ($category->products()->withTrashed()->exists()) {
+            return redirect()->route('category.index')->with('error', 'Kategori tidak bisa dihapus karena masih ada produk di dalamnya!');
         }
+
+        $category->delete();
+
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }

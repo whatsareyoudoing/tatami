@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('nama_varian'); // misal: "Tatami Biru" atau "100x200cm"
-            $table->integer('tambahan_harga')->default(0);
-            $table->integer('stok')->default(0);
+            $table->string('warna'); // misal: "Light Blue", "Dark Brown"
+            $table->unsignedInteger('stok')->default(0);
+            $table->unsignedInteger('urutan')->default(0); // urutan di dropdown
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->unique(['product_id', 'warna']);
         });
     }
 

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -23,7 +22,7 @@ class UserService
                 'name'     => $data['name'],
                 'email'    => $data['email'],
                 'username' => $data['username'],
-                'password' => Hash::make($data['password']),
+                'password' => $data['password'], // di-hash otomatis oleh cast 'hashed' di model User
             ]);
 
             if (!empty($data['role'])) {
@@ -47,7 +46,7 @@ class UserService
 
             // 2. Cek password jika diisi (array PHP menggunakan !empty)
             if (!empty($data['password'])) {
-                $updateData['password'] = Hash::make($data['password']);
+                $updateData['password'] = $data['password'];
             }
 
             // 3. Jalankan query update ke tabel users
