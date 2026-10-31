@@ -20,6 +20,8 @@
 
     <script src="@asset('js/jquery-3.7.1.min.js')"></script>
     <script src="@asset('js/bootstrap.bundle.min.js')"></script>
+    {{-- Konfirmasi untuk form dengan atribut data-confirm (misalnya hapus barang di keranjang) --}}
+    <script src="@asset('js/admin.js')"></script>
     @stack('scripts')
 </body>
 </html>

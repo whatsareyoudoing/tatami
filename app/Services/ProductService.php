@@ -7,6 +7,7 @@ use App\Models\ProductImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductService
 {
@@ -16,7 +17,7 @@ class ProductService
     /** File lama yang sudah tidak dipakai (dihapus setelah transaksi berhasil) */
     private array $obsoleteFiles = [];
 
-    private const FIELDS = ['category_id', 'nama', 'slug', 'sku', 'harga_dasar', 'harga_coret', 'deskripsi', 'is_active'];
+    private const FIELDS = ['category_id', 'nama', 'deskripsi', 'is_active', 'has_variants', 'variant_label', 'youtube_id'];
 
     public function __construct(
         protected ImageOptimizer $imageOptimizer
@@ -25,10 +26,13 @@ class ProductService
     public function createProduct(array $data): Product
     {
         return $this->run(function () use ($data) {
-            $product = Product::create(Arr::only($data, self::FIELDS));
+            $product = Product::create([
+                ...$this->productFields($data),
+                'slug' => $this->uniqueSlug($data['nama']),
+            ]);
 
             $this->storeImages($product, $data['images'] ?? []);
-            $this->syncVariants($product, $data['variants']);
+            $this->syncPricing($product, $data, wasVariable: false);
 
             return $product;
         });
@@ -37,11 +41,15 @@ class ProductService
     public function updateProduct(array $data, Product $product): Product
     {
         return $this->run(function () use ($data, $product) {
-            $product->update(Arr::only($data, self::FIELDS));
+            $wasVariable = $product->has_variants;
+
+            // URL produk hanya berubah kalau namanya diganti, supaya link yang sudah dibagikan tetap jalan
+            $slug = $product->nama === $data['nama'] ? $product->slug : $this->uniqueSlug($data['nama'], $product->id);
+            $product->update([...$this->productFields($data), 'slug' => $slug]);
 
             $this->deleteImages($product, $data['hapus_gambar'] ?? []);
             $this->storeImages($product, $data['images'] ?? []);
-            $this->syncVariants($product, $data['variants']);
+            $this->syncPricing($product, $data, $wasVariable);
 
             return $product;
         });
@@ -53,6 +61,30 @@ class ProductService
     public function deleteProduct(Product $product): bool
     {
         return $product->delete();
+    }
+
+    /**
+     * Slug dari nama; kalau sudah dipakai (termasuk produk yang sudah dihapus) diberi nomor: bantal, bantal-2, bantal-3.
+     */
+    public function uniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $base = Str::slug($name) ?: 'produk';
+        $slug = $base;
+
+        for ($i = 2; Product::withTrashed()->where('slug', $slug)->when($ignoreId, fn ($q) => $q->whereKeyNot($ignoreId))->exists(); $i++) {
+            $slug = "{$base}-{$i}";
+        }
+
+        return $slug;
+    }
+
+    private function productFields(array $data): array
+    {
+        $fields = Arr::only($data, self::FIELDS);
+        $fields['youtube_id'] = $data['youtube_id'] ?? null;
+        $fields['variant_label'] = $data['has_variants'] ? $data['variant_label'] : null;
+
+        return $fields;
     }
 
     /**
@@ -74,8 +106,44 @@ class ProductService
         return $product;
     }
 
+    private function syncPricing(Product $product, array $data, bool $wasVariable): void
+    {
+        $data['has_variants']
+            ? $this->syncVariants($product, $data['variants'])
+            : $this->syncDefaultVariant($product, $data, $wasVariable);
+    }
+
     /**
-     * Samakan warna di DB dengan isi form: yang hilang dihapus, yang ada diupdate, yang baru dibuat.
+     * Produk tanpa varian: harga/stok/SKU disimpan di 1 varian "Default".
+     * Kalau sebelumnya produk punya varian, semua varian lama diganti (pesanan lama tetap aman karena datanya disalin).
+     */
+    private function syncDefaultVariant(Product $product, array $data, bool $wasVariable): void
+    {
+        $attributes = [
+            'nama'        => Product::DEFAULT_VARIANT,
+            'harga'       => $data['harga'],
+            'harga_coret' => $data['harga_coret'] ?? null,
+            'stok'        => $data['stok'],
+            'sku'         => $data['sku'] ?? null,
+            'urutan'      => 0,
+            'is_active'   => true,
+        ];
+
+        $variants = $product->variants()->with('images')->get();
+        $default = $wasVariable ? null : $variants->first();
+
+        foreach ($variants as $variant) {
+            if ($variant->isNot($default)) {
+                $this->discardImages($variant->images);
+                $variant->delete();
+            }
+        }
+
+        $default ? $default->update($attributes) : $product->variants()->create($attributes);
+    }
+
+    /**
+     * Samakan varian di DB dengan isi form: yang hilang dihapus, yang ada diupdate, yang baru dibuat.
      * Urutan baris di form menjadi kolom urutan.
      */
     private function syncVariants(Product $product, array $rows): void
@@ -85,7 +153,7 @@ class ProductService
 
         $keepIds = collect($rows)->pluck('id')->filter()->all();
 
-        // Warna yang dihapus dari form ikut menghapus fotonya
+        // Varian yang dihapus dari form ikut menghapus fotonya
         $removed = $product->variants()->whereNotIn('id', $keepIds)->with('images')->get();
         foreach ($removed as $variant) {
             $this->discardImages($variant->images);
@@ -94,17 +162,20 @@ class ProductService
 
         foreach (array_values($rows) as $index => $row) {
             $attributes = [
-                'warna'     => $row['warna'],
-                'stok'      => $row['stok'],
-                'urutan'    => $index,
-                'is_active' => !empty($row['is_active']),
+                'nama'        => $row['nama'],
+                'harga'       => $row['harga'],
+                'harga_coret' => $row['harga_coret'] ?? null,
+                'stok'        => $row['stok'],
+                'sku'         => $row['sku'] ?? null,
+                'urutan'      => $index,
+                'is_active'   => !empty($row['is_active']),
             ];
 
             $variant = !empty($row['id'])
                 ? tap($product->variants()->findOrFail($row['id']))->update($attributes)
                 : $product->variants()->create($attributes);
 
-            // Satu foto per warna: foto baru menggantikan yang lama
+            // Satu foto per varian: foto baru menggantikan yang lama
             if (!empty($row['image'])) {
                 $this->discardImages($variant->images);
 

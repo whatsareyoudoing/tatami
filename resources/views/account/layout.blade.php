@@ -30,6 +30,9 @@
                         <a href="{{ route('account.index') }}" @class(['nav-link', 'active' => request()->routeIs('account.index')])>
                             <i class="fas fa-user fa-fw me-2"></i>Akun Saya
                         </a>
+                        <a href="{{ route('account.orders') }}" @class(['nav-link', 'active' => request()->routeIs('account.orders*')])>
+                            <i class="fas fa-shopping-bag fa-fw me-2"></i>Pesanan Saya
+                        </a>
                         <a href="{{ route('account.edit') }}" @class(['nav-link', 'active' => request()->routeIs('account.edit')])>
                             <i class="fas fa-user-edit fa-fw me-2"></i>Ubah Profil & Password
                         </a>

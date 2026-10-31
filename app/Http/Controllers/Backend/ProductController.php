@@ -28,9 +28,8 @@ class ProductController extends Controller implements HasMiddleware
 
     public function index()
     {
-        $products = Product::with(['category:id,name', 'images'])
-            ->withSum('variants', 'stok')
-            ->withCount('variants')
+        // Harga/stok/SKU ada di varian; foto cukup foto utama
+        $products = Product::with(['category:id,name', 'cover', 'variants:id,product_id,nama,harga,sku,stok,urutan'])
             ->latest()
             ->paginate(10);
 

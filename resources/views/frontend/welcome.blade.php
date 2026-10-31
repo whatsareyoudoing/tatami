@@ -81,57 +81,33 @@
         </div>
     </div>
 
+    @php
+        // Kotak kategori: tampilan sama seperti sebelumnya, sekarang menuju daftar produk per kategori.
+        // Slug dibuat dari nama, jadi nama kategori di admin harus sama (misalnya "Sekat Ruang" -> sekat-ruang).
+        $kategoriBeranda = [
+            ['Tatami', 'ico-facade.png'],
+            ['Sekat Ruang', 'ico-cupboard.png'],
+            ['Furniture', 'ico-vase.png'],
+            ['Dekorasi', 'ico-pillow.png'],
+            ['Bantal', 'ico-lamp.png'],
+            ['Lampu Jepang', 'ico-tatami.png'],
+        ];
+    @endphp
     <div class="container">
         <h3 class="fw-bold text-center color-tatami">Belanja Sesuai Kebutuhanmu</h3>
         <div class="row">
-            <div class="col-6 col-lg-2 p-4">
-                <div class="d-flex justify-content-center flex-column text-center p-2">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/ico-facade.png" alt="">
-                    <p class="py-3">
-                        Tatami
-                    </p>
+            @foreach ($kategoriBeranda as [$nama, $ikon])
+                <div class="col-6 col-lg-2 p-4">
+                    <a href="{{ route('shop.index', ['kategori' => Str::slug($nama)]) }}" class="text-decoration-none text-reset">
+                        <div class="d-flex justify-content-center flex-column text-center p-2">
+                            <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/{{ $ikon }}" alt="">
+                            <p class="py-3">
+                                {{ $nama }}
+                            </p>
+                        </div>
+                    </a>
                 </div>
-            </div>
-            <div class="col-6 col-lg-2 p-4">
-                <div class="d-flex justify-content-center flex-column text-center p-2">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/ico-cupboard.png" alt="">
-                    <p class="py-3">
-                        Sekat Ruang
-                    </p>
-                </div>
-            </div>
-            <div class="col-6 col-lg-2 p-4">
-                <div class="d-flex justify-content-center flex-column text-center p-2">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/ico-vase.png" alt="">
-                    <p class="py-3">
-                        Furniture
-                    </p>
-                </div>
-            </div>
-            <div class="col-6 col-lg-2 p-4">
-                <div class="d-flex justify-content-center flex-column text-center p-2">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/ico-pillow.png" alt="">
-                    <p class="py-3">
-                        Dekorasi
-                    </p>
-                </div>
-            </div>
-            <div class="col-6 col-lg-2 p-4">
-                <div class="d-flex justify-content-center flex-column text-center p-2">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/ico-lamp.png" alt="">
-                    <p class="py-3">
-                        Bantal
-                    </p>
-                </div>
-            </div>
-            <div class="col-6 col-lg-2 p-4">
-                <div class="d-flex justify-content-center flex-column text-center p-2">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/ico-tatami.png" alt="">
-                    <p class="py-3">
-                        Lampu Jepang
-                    </p>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 
@@ -139,124 +115,20 @@
         <div class="row">
             <div class="col d-flex justify-content-between">
                 <h3 class="fw-bold color-tatami">Sorotan</h3>
-                <a href="#" class="color-tatami">lihat semua</a>
+                <a href="{{ route('shop.index') }}" class="color-tatami">lihat semua</a>
             </div>
         </div>
     </div>
 
     <div class="container mt-3 mb-5">
         <div class="row">
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/04/2asdfasfd.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
+            @forelse ($sorotan as $product)
+                <div class="col-6 col-lg-3 py-3">
+                    <x-product-card :product="$product" />
                 </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/DSCF0891-rotated.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/11/1asdadffg.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22S-BK-compress.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22M-NA-compress.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/20240820_155125.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/9xcbvcb.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/15cvgdfg.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2025/02/90-1.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <span class="fw-bold text-muted">Bantal</span>
-                        <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                        <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 d-flex justify-content-center pt-5">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link color-tatami" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link color-tatami" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link color-tatami" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link color-tatami" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link color-tatami" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            @empty
+                <div class="col-12 text-center text-muted py-4">Produk akan segera hadir.</div>
+            @endforelse
         </div>
     </div>
 {{--  --}}

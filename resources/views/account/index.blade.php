@@ -26,14 +26,32 @@
         </dl>
     </x-admin.card>
 
-    {{-- Diisi daftar pesanan di tahap 3 --}}
-    <x-admin.card title="Pesanan Saya">
-        <div class="text-center text-muted py-4">
-            <i class="fas fa-shopping-bag fs-2 mb-2 d-block"></i>
-            Belum ada pesanan.
-            <div class="mt-3">
-                <a href="{{ url('/produk') }}" class="btn btn-tatami btn-sm">Mulai Belanja</a>
+    <x-admin.card title="Pesanan Terakhir">
+        @if ($recentOrders->isNotEmpty())
+            <x-slot:actions>
+                <a href="{{ route('account.orders') }}" class="btn btn-sm btn-outline-secondary">Lihat semua</a>
+            </x-slot:actions>
+        @endif
+
+        @forelse ($recentOrders as $order)
+            <a href="{{ route('account.orders.show', $order) }}" @class(['d-flex justify-content-between align-items-center gap-2 text-decoration-none text-reset py-2', 'border-top' => !$loop->first])>
+                <div>
+                    <div class="fw-semibold">{{ $order->order_number }}</div>
+                    <div class="small text-muted">{{ $order->created_at->translatedFormat('d M Y') }}</div>
+                </div>
+                <div class="text-end">
+                    <div class="fw-semibold">@rupiah($order->total)</div>
+                    <span class="badge text-bg-{{ $order->status_color }}">{{ $order->status_label }}</span>
+                </div>
+            </a>
+        @empty
+            <div class="text-center text-muted py-4">
+                <i class="fas fa-shopping-bag fs-2 mb-2 d-block"></i>
+                Belum ada pesanan.
+                <div class="mt-3">
+                    <a href="{{ route('shop.index') }}" class="btn btn-tatami btn-sm">Mulai Belanja</a>
+                </div>
             </div>
-        </div>
+        @endforelse
     </x-admin.card>
 @endsection

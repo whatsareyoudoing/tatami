@@ -19,7 +19,7 @@
                         <th>Nama</th>
                         <th>Kategori</th>
                         <th>Harga</th>
-                        <th class="text-center">Warna</th>
+                        <th class="text-center">Varian</th>
                         <th class="text-center">Stok</th>
                         <th class="text-center">Status</th>
                         <th class="text-center" style="width: 120px;">Aksi</th>
@@ -29,28 +29,42 @@
                     @forelse ($products as $index => $product)
                         <tr>
                             <td class="text-center text-muted">{{ $products->firstItem() + $index }}</td>
+                            @php
+                                $minPrice = $product->variants->min('harga');
+                                $maxPrice = $product->variants->max('harga');
+                            @endphp
                             <td>
-                                @if ($cover = $product->images->first())
-                                    <img src="{{ $cover->thumb_url }}" alt="{{ $product->nama }}" class="thumb rounded border" loading="lazy">
+                                @if ($product->cover_url)
+                                    <img src="{{ $product->cover_url }}" alt="{{ $product->nama }}" class="thumb rounded border" loading="lazy">
                                 @else
                                     <div class="thumb rounded border bg-light d-flex align-items-center justify-content-center text-muted"><i class="fas fa-image"></i></div>
                                 @endif
                             </td>
                             <td>
                                 <div class="fw-semibold">{{ $product->nama }}</div>
-                                @if ($product->sku)
-                                    <div class="small text-muted">{{ $product->sku }}</div>
+                                @if (!$product->has_variants && $product->variants->first()?->sku)
+                                    <div class="small text-muted">{{ $product->variants->first()->sku }}</div>
+                                @endif
+                                @if ($product->youtube_id)
+                                    <div class="small text-danger"><i class="fab fa-youtube me-1"></i>Ada video</div>
                                 @endif
                             </td>
                             <td>{{ $product->category->name }}</td>
                             <td class="text-nowrap">
-                                Rp{{ number_format($product->harga_dasar, 0, ',', '.') }}
-                                @if ($product->harga_coret)
-                                    <div class="small text-muted text-decoration-line-through">Rp{{ number_format($product->harga_coret, 0, ',', '.') }}</div>
+                                @rupiah($minPrice)
+                                @if ($maxPrice > $minPrice)
+                                    – @rupiah($maxPrice)
                                 @endif
                             </td>
-                            <td class="text-center">{{ $product->variants_count }}</td>
-                            <td class="text-center">{{ (int) $product->variants_sum_stok }}</td>
+                            <td class="text-center">
+                                @if ($product->has_variants)
+                                    {{ $product->variants->count() }}
+                                    <div class="small text-muted">{{ $product->variant_label }}</div>
+                                @else
+                                    <span class="text-muted">–</span>
+                                @endif
+                            </td>
+                            <td class="text-center">{{ $product->variants->sum('stok') }}</td>
                             <td class="text-center">
                                 <span @class(['badge', 'text-bg-success' => $product->is_active, 'text-bg-secondary' => !$product->is_active])>
                                     {{ $product->is_active ? 'Aktif' : 'Nonaktif' }}

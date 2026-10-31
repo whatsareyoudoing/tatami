@@ -54,6 +54,7 @@
                         <li><a class="dropdown-item text-warning-emphasis" href="{{ route('verification.notice') }}"><i class="fas fa-envelope fa-fw me-2"></i>Verifikasi Email</a></li>
                     @else
                         <li><a class="dropdown-item" href="{{ route('account.index') }}"><i class="fas fa-user fa-fw me-2"></i>Akun Saya</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.orders') }}"><i class="fas fa-shopping-bag fa-fw me-2"></i>Pesanan Saya</a></li>
                     @endcan
 
                     <li><hr class="dropdown-divider"></li>
@@ -67,8 +68,14 @@
             </div>
         @endguest
 
-        {{-- Keranjang menyusul di tahap 3 --}}
-        <i class="fas fa-shopping-cart fs-4 color-tatami"></i>
+        {{-- Keranjang: tamu diarahkan ke login dulu. Angka = jumlah barang di keranjang. --}}
+        @php $cartCount = auth()->user()?->can('manage_cart') ? (int) auth()->user()->cartItems()->sum('quantity') : 0; @endphp
+        <a href="{{ route('cart.index') }}" class="text-decoration-none position-relative" title="Keranjang">
+            <i class="fas fa-shopping-cart fs-4 color-tatami"></i>
+            @if ($cartCount > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger cart-badge">{{ $cartCount > 99 ? '99+' : $cartCount }}</span>
+            @endif
+        </a>
     </div>
   </div>
 </nav>

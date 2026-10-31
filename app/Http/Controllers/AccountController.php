@@ -12,7 +12,10 @@ class AccountController extends Controller
 {
     public function index(Request $request)
     {
-        return view('account.index', ['user' => $request->user()]);
+        return view('account.index', [
+            'user'         => $request->user(),
+            'recentOrders' => $request->user()->orders()->latest()->take(3)->get(),
+        ]);
     }
 
     public function edit(Request $request)

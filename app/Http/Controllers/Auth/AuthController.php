@@ -30,10 +30,9 @@ class AuthController extends Controller
                 return redirect()->route('verification.notice');
             }
 
-            // Admin/editor kembali ke halaman admin yang tadi dituju, customer ke beranda
-            return $request->user()->can('access_admin')
-                ? redirect()->intended(route('dashboard'))
-                : redirect()->route('home');
+            // Kembali ke halaman yang tadi dituju (misalnya produk yang mau dibeli).
+            // Kalau tidak ada: admin/editor ke dashboard, customer ke beranda.
+            return redirect()->intended($request->user()->can('access_admin') ? route('dashboard') : route('home'));
         }
 
         return back()->withErrors([

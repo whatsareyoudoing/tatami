@@ -38,6 +38,11 @@ class AppServiceProvider extends ServiceProvider
         // @asset('css/admin.css') -> /css/admin.css?v=1730000000
         // Versi = waktu file terakhir diubah, jadi browser boleh cache lama (lihat public/.htaccess)
         // tapi langsung mengambil file baru begitu isinya berubah.
+        // @rupiah(193000) -> Rp193.000
+        Blade::directive('rupiah', function (string $value) {
+            return "<?php echo 'Rp' . number_format((int) ({$value}), 0, ',', '.'); ?>";
+        });
+
         Blade::directive('asset', function (string $path) {
             return "<?php echo e(asset({$path}) . (is_file(public_path({$path})) ? '?v=' . filemtime(public_path({$path})) : '')); ?>";
         });

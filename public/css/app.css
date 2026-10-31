@@ -18,3 +18,43 @@
 .page-link:hover {
     color: #245237 !important;
 }
+
+/* ---------- Toko ---------- */
+.product-card { transition: box-shadow .2s ease; }
+.product-card:hover { box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1); }
+.product-card .ratio > .product-card-badges { width: auto; height: auto; }
+
+/* Stok habis: kartu tetap tampil tapi tidak bisa diklik */
+.product-card-disabled { cursor: not-allowed; }
+.product-card-disabled:hover { box-shadow: none; }
+.product-card-disabled img,
+.product-card-disabled .card-body { filter: grayscale(1); opacity: .55; }
+
+/* Video di galeri detail produk */
+.video-thumb { position: relative; display: block; width: 100%; height: 100%; border: 0; padding: 0; background: #000; }
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+.video-thumb .play-icon {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 3.5rem; color: #ff0000; text-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+}
+.gallery-thumb .play-icon { font-size: 1.25rem; }
+
+.gallery-thumb {
+    width: 72px;
+    height: 72px;
+    opacity: .7;
+}
+.gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-thumb.active,
+.gallery-thumb:hover { opacity: 1; border-color: #245237 !important; }
+
+.quantity-input { max-width: 160px; }
+
+.cart-thumb { width: 80px; height: 80px; object-fit: cover; }
+.cart-badge { font-size: .65rem; }
+
+.pagination .page-item.active .page-link {
+    background-color: #245237;
+    border-color: #245237;
+    color: #fff;
+}

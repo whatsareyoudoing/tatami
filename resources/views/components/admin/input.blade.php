@@ -19,7 +19,7 @@
 ])
 
 @php
-    // name="variants[0][warna]" -> key old()/error "variants.0.warna"
+    // name="variants[0][nama]" -> key old()/error "variants.0.nama"
     $key = trim(str_replace(['[', ']'], ['.', ''], $name), '.');
     $id = $attributes->get('id', str_replace('.', '_', $key));
     $current = $type === 'password' ? null : old($key, $value);

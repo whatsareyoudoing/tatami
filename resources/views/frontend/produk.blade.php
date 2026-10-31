@@ -1,362 +1,58 @@
 @extends('layouts.frontend')
 
-@section('title', 'Produk')
+@section('title', $categoryLabel ? "Produk {$categoryLabel}" : 'Produk')
 
 @section('content')
-{{-- navbar --}}
+    <div class="container mt-4 mb-5">
+        {{-- Filter kategori + urutan --}}
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-2">
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ route('shop.index', array_filter(['urut' => $sort !== 'terbaru' ? $sort : null])) }}"
+                   @class(['btn btn-sm rounded-pill', 'btn-tatami' => !$activeSlug, 'btn-outline-secondary' => $activeSlug])>Semua</a>
+                @foreach ($categories as $category)
+                    <a href="{{ route('shop.index', array_filter(['kategori' => $category->slug, 'urut' => $sort !== 'terbaru' ? $sort : null])) }}"
+                       @class(['btn btn-sm rounded-pill', 'btn-tatami' => $activeSlug === $category->slug, 'btn-outline-secondary' => $activeSlug !== $category->slug])>{{ $category->name }}</a>
+                @endforeach
+            </div>
 
-{{-- content --}}
-    <div class="container mt-3 mb-5">
-        <div class="row">
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/04/2asdfasfd.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/DSCF0891-rotated.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/11/1asdadffg.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22S-BK-compress.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22M-NA-compress.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/20240820_155125.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/9xcbvcb.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/15cvgdfg.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2025/02/90-1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/04/2asdfasfd.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/DSCF0891-rotated.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/11/1asdadffg.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22S-BK-compress.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22M-NA-compress.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/20240820_155125.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/9xcbvcb.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/15cvgdfg.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2025/02/90-1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/04/2asdfasfd.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/DSCF0891-rotated.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/11/1asdadffg.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22S-BK-compress.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/03/TST-22M-NA-compress.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2026/09/20240820_155125.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/9xcbvcb.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2024/05/15cvgdfg.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 py-3">
-                <div class="card h-100">
-                    <a href="#" class="text-decoration-none text-reset">
-                        <img src="https://tatamiindonesia.id/wp-content/uploads/2025/02/90-1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <span class="fw-bold text-muted">Bantal</span>
-                            <p class="card-text">Zabuton Igusa – Bantal Duduk</p>
-                            <span class="fw-bold text-decoration-underline">Rp. 220.000</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            <form action="{{ route('shop.index') }}" method="GET" class="d-flex align-items-center gap-2">
+                @if ($activeSlug)
+                    <input type="hidden" name="kategori" value="{{ $activeSlug }}">
+                @endif
+                <label for="urut" class="small text-muted text-nowrap">Urutkan</label>
+                <select id="urut" name="urut" class="form-select form-select-sm" onchange="this.form.submit()">
+                    @foreach ($sorts as $value => $label)
+                        <option value="{{ $value }}" @selected($sort === $value)>{{ $label }}</option>
+                    @endforeach
+                </select>
+                <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">Terapkan</button></noscript>
+            </form>
         </div>
+
+        @if ($categoryLabel)
+            <h1 class="h4 fw-bold color-tatami mt-3 mb-0">{{ $categoryLabel }}</h1>
+        @endif
+
         <div class="row">
-            <div class="col-12 d-flex justify-content-center pt-5">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link color-tatami" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link color-tatami" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link color-tatami" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link color-tatami" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link color-tatami" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            @forelse ($products as $product)
+                <div class="col-6 col-lg-3 py-3">
+                    <x-product-card :product="$product" />
+                </div>
+            @empty
+                <div class="col-12 text-center text-muted py-5">
+                    <i class="fas fa-box-open fs-1 mb-3 d-block"></i>
+                    {{ $categoryLabel ? "Belum ada produk untuk kategori {$categoryLabel}." : 'Belum ada produk.' }}
+                    @if ($activeSlug)
+                        <div class="mt-3"><a href="{{ route('shop.index') }}" class="color-tatami">Lihat semua produk</a></div>
+                    @endif
+                </div>
+            @endforelse
         </div>
+
+        @if ($products->hasPages())
+            <div class="d-flex justify-content-center pt-4">
+                {{ $products->links('pagination::bootstrap-4') }}
+            </div>
+        @endif
     </div>
-{{--  --}}
-
-
-
 @endsection
