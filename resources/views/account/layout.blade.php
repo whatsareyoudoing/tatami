@@ -21,8 +21,8 @@
                             {{ Str::upper(Str::substr(auth()->user()->name, 0, 1)) }}
                         </div>
                         <div class="overflow-hidden">
-                            <div class="fw-semibold text-truncate">{{ auth()->user()->name }}</div>
-                            <small class="text-muted text-truncate d-block">{{ auth()->user()->email }}</small>
+                            <div class="fw-semibold text-truncate notranslate">{{ auth()->user()->name }}</div>
+                            <small class="text-muted text-truncate d-block notranslate">{{ auth()->user()->email }}</small>
                         </div>
                     </div>
 

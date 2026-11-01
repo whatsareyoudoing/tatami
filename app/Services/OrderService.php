@@ -70,12 +70,12 @@ class OrderService
     }
 
     /**
-     * Tandai dikirim + isi no. resi + kurangi stok setiap warna.
+     * Tandai dikirim + isi kurir dan no. resi + kurangi stok setiap varian.
      * Gagal (tanpa perubahan apa pun) kalau ada stok yang tidak cukup.
      */
-    public function ship(Order $order, string $trackingNumber): Order
+    public function ship(Order $order, string $courier, string $trackingNumber): Order
     {
-        return DB::transaction(function () use ($order, $trackingNumber) {
+        return DB::transaction(function () use ($order, $courier, $trackingNumber) {
             // Ambil ulang dengan kunci baris: dua admin yang menekan "Dikirim" bersamaan tidak memotong stok dua kali
             $order = Order::with('items')->lockForUpdate()->findOrFail($order->id);
 
@@ -107,6 +107,7 @@ class OrderService
 
             $order->update([
                 'status'            => Order::DIKIRIM,
+                'courier'           => $courier,
                 'tracking_number'   => $trackingNumber,
                 'shipped_at'        => now(),
                 'stock_deducted_at' => $order->stock_deducted_at ?? now(),
@@ -121,21 +122,22 @@ class OrderService
         return $this->changeStatus($order, Order::DIKIRIM, Order::SELESAI, 'completed_at', 'ditandai selesai');
     }
 
-    public function cancel(Order $order): Order
+    // $reason: alasan dari admin (opsional), tampil di email dan halaman pesanan customer
+    public function cancel(Order $order, ?string $reason = null): Order
     {
-        return $this->changeStatus($order, Order::BARU, Order::DIBATALKAN, 'cancelled_at', 'dibatalkan');
+        return $this->changeStatus($order, Order::BARU, Order::DIBATALKAN, 'cancelled_at', 'dibatalkan', ['cancel_reason' => $reason]);
     }
 
-    private function changeStatus(Order $order, string $from, string $to, string $timestampColumn, string $action): Order
+    private function changeStatus(Order $order, string $from, string $to, string $timestampColumn, string $action, array $extra = []): Order
     {
-        return DB::transaction(function () use ($order, $from, $to, $timestampColumn, $action) {
+        return DB::transaction(function () use ($order, $from, $to, $timestampColumn, $action, $extra) {
             $order = Order::lockForUpdate()->findOrFail($order->id);
 
             if ($order->status !== $from) {
                 throw new OrderException("Pesanan {$order->order_number} berstatus {$order->status_label}, tidak bisa {$action}.");
             }
 
-            $order->update(['status' => $to, $timestampColumn => now()]);
+            $order->update(['status' => $to, $timestampColumn => now(), ...$extra]);
 
             return $order;
         });

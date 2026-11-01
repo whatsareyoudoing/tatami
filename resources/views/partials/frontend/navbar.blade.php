@@ -6,7 +6,7 @@
         ['label' => 'Tentang',       'url' => '/tentang',      'match' => 'tentang'],
         ['label' => 'Custom Tatami', 'url' => '/custom-tatami', 'match' => 'custom-tatami'],
         ['label' => 'Kontak',        'url' => '/kontak',       'match' => 'kontak'],
-        ['label' => 'Artikel',       'url' => '/artikel',      'match' => 'artikel*'],
+        // ['label' => 'Artikel',       'url' => '/artikel',      'match' => 'artikel*'],
     ];
 @endphp
 
@@ -29,6 +29,19 @@
       </ul>
     </div>
     <div class="d-flex justify-between align-items-center gap-3">
+        {{-- Pilihan bahasa (diatur oleh partials/frontend/translate). notranslate: nama bahasa tidak ikut diterjemahkan --}}
+        <div class="dropdown notranslate">
+            <a href="#" class="text-decoration-none dropdown-toggle d-flex align-items-center gap-1 color-tatami fw-semibold small" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Bahasa / Language / 言語">
+                <i class="fas fa-globe fs-5"></i>
+                <span data-lang-current>ID</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><a class="dropdown-item" href="#" data-lang="id">Bahasa Indonesia</a></li>
+                <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
+                <li><a class="dropdown-item" href="#" data-lang="ja">日本語</a></li>
+            </ul>
+        </div>
+
         @guest
             <a href="{{ route('login') }}" class="text-decoration-none" title="Masuk / Daftar">
                 <i class="fas fa-user fs-4 color-tatami"></i>
@@ -37,11 +50,11 @@
             <div class="dropdown">
                 <a href="#" class="text-decoration-none dropdown-toggle d-flex align-items-center gap-2 color-tatami" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Akun">
                     <i class="fas fa-user-circle fs-4"></i>
-                    <span class="d-none d-md-inline fw-semibold small">{{ Str::limit(auth()->user()->name, 15) }}</span>
+                    <span class="d-none d-md-inline fw-semibold small notranslate">{{ Str::limit(auth()->user()->name, 15) }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                     <li>
-                        <div class="dropdown-header">
+                        <div class="dropdown-header notranslate">
                             <div class="fw-semibold text-body">{{ auth()->user()->name }}</div>
                             <small>{{ auth()->user()->email }}</small>
                         </div>

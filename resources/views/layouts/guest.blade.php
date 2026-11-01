@@ -15,6 +15,8 @@
     </main>
 
     <script src="@asset('js/bootstrap.bundle.min.js')"></script>
+    {{-- Login/daftar/verifikasi ikut bahasa yang dipilih di website (tanpa tombol pilihan) --}}
+    @include('partials.frontend.translate')
     @stack('scripts')
 </body>
 </html>

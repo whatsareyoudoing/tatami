@@ -93,6 +93,9 @@
 
                 @if ($order->tracking_number)
                     <div class="bg-light rounded-3 p-3 small">
+                        @if ($order->courier)
+                            <div><span class="text-muted">Kurir:</span> <strong>{{ $order->courier }}</strong></div>
+                        @endif
                         <div><span class="text-muted">No. resi:</span> <strong>{{ $order->tracking_number }}</strong></div>
                         <div><span class="text-muted">Dikirim:</span> {{ $order->shipped_at?->translatedFormat('d M Y H:i') }}</div>
                         @if ($order->completed_at)
@@ -101,7 +104,12 @@
                     </div>
                 @endif
                 @if ($order->cancelled_at)
-                    <div class="bg-light rounded-3 p-3 small"><span class="text-muted">Dibatalkan:</span> {{ $order->cancelled_at->translatedFormat('d M Y H:i') }}</div>
+                    <div class="bg-light rounded-3 p-3 small">
+                        <div><span class="text-muted">Dibatalkan:</span> {{ $order->cancelled_at->translatedFormat('d M Y H:i') }}</div>
+                        @if ($order->cancel_reason)
+                            <div><span class="text-muted">Alasan:</span> {{ $order->cancel_reason }}</div>
+                        @endif
+                    </div>
                 @endif
 
                 {{-- Ubah status --}}
@@ -112,17 +120,30 @@
                               data-confirm="Tandai {{ $order->order_number }} sebagai dikirim? Stok produk akan dikurangi otomatis.">
                             @csrf
                             @method('PATCH')
-                            <label for="resi-{{ $order->id }}" class="form-label fw-semibold">No. Resi</label>
-                            <div class="input-group">
-                                <input type="text" id="resi-{{ $order->id }}" name="tracking_number" placeholder="Contoh: JNE1234567890"
-                                       value="{{ $isOpen ? old('tracking_number') : '' }}"
-                                       @class(['form-control', 'is-invalid' => $isOpen && $errors->has('tracking_number')])>
-                                <button type="submit" class="btn btn-tatami"><i class="fas fa-truck me-1"></i> Tandai Dikirim</button>
+                            <div class="row g-2 align-items-start">
+                                <div class="col-md-4">
+                                    <label for="kurir-{{ $order->id }}" class="form-label fw-semibold">Kurir</label>
+                                    <input type="text" id="kurir-{{ $order->id }}" name="courier" placeholder="Contoh: JNE REG" maxlength="50" required
+                                           value="{{ $isOpen ? old('courier') : '' }}"
+                                           @class(['form-control', 'is-invalid' => $isOpen && $errors->has('courier')])>
+                                    @if ($isOpen && $errors->has('courier'))
+                                        <div class="invalid-feedback">{{ $errors->first('courier') }}</div>
+                                    @endif
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="resi-{{ $order->id }}" class="form-label fw-semibold">No. Resi</label>
+                                    <div class="input-group has-validation">
+                                        <input type="text" id="resi-{{ $order->id }}" name="tracking_number" placeholder="Contoh: 1234567890" maxlength="100" required
+                                               value="{{ $isOpen ? old('tracking_number') : '' }}"
+                                               @class(['form-control', 'is-invalid' => $isOpen && $errors->has('tracking_number')])>
+                                        <button type="submit" class="btn btn-tatami"><i class="fas fa-truck me-1"></i> Tandai Dikirim</button>
+                                        @if ($isOpen && $errors->has('tracking_number'))
+                                            <div class="invalid-feedback">{{ $errors->first('tracking_number') }}</div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
-                            @if ($isOpen && $errors->has('tracking_number'))
-                                <div class="invalid-feedback d-block">{{ $errors->first('tracking_number') }}</div>
-                            @endif
-                            <div class="form-text">Stok setiap barang akan dikurangi sesuai jumlah pesanan.</div>
+                            <div class="form-text">Kurir dan no. resi dikirim ke email customer. Stok setiap barang akan dikurangi sesuai jumlah pesanan.</div>
                         </form>
                     @endif
                 @endcan
@@ -132,10 +153,20 @@
                 @if (in_array($order->status, [\App\Models\Order::BARU, \App\Models\Order::DIKIRIM]))
                     <div class="modal-footer justify-content-between">
                         @if ($order->status === \App\Models\Order::BARU)
-                            <form action="{{ route('order.cancel', $order) }}" method="POST" data-confirm="Batalkan pesanan {{ $order->order_number }}?">
+                            <form action="{{ route('order.cancel', $order) }}" method="POST" class="d-flex flex-wrap gap-2 flex-grow-1"
+                                  data-confirm="Batalkan pesanan {{ $order->order_number }}? Customer akan dikabari lewat email.">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="btn btn-outline-danger"><i class="fas fa-times me-1"></i> Batalkan Pesanan</button>
+                                <div class="flex-grow-1">
+                                    <input type="text" name="cancel_reason" maxlength="255" aria-label="Alasan pembatalan"
+                                           placeholder="Alasan pembatalan (opsional), misal: stok habis"
+                                           value="{{ $isOpen ? old('cancel_reason') : '' }}"
+                                           @class(['form-control', 'is-invalid' => $isOpen && $errors->has('cancel_reason')])>
+                                    @if ($isOpen && $errors->has('cancel_reason'))
+                                        <div class="invalid-feedback">{{ $errors->first('cancel_reason') }}</div>
+                                    @endif
+                                </div>
+                                <button type="submit" class="btn btn-outline-danger align-self-start"><i class="fas fa-times me-1"></i> Batalkan Pesanan</button>
                             </form>
                         @else
                             <span></span>

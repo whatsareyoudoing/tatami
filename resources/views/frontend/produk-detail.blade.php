@@ -180,7 +180,7 @@
                 <div class="text-muted">{!! nl2br(e($product->deskripsi)) !!}</div>
             @endif
 
-            <p @class(['small text-muted mt-3 mb-0', 'd-none' => !$preselected?->sku]) id="sku-info">SKU: <span>{{ $preselected?->sku }}</span></p>
+            <p @class(['small text-muted mt-3 mb-0', 'd-none' => !$preselected?->sku]) id="sku-info">SKU: <span class="notranslate">{{ $preselected?->sku }}</span></p>
         </div>
     </div>
 

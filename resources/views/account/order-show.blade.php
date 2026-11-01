@@ -13,7 +13,7 @@
     @endphp
 
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-        <h1 class="h3 fw-bold mb-0">{{ $order->order_number }}</h1>
+        <h1 class="h3 fw-bold mb-0 notranslate">{{ $order->order_number }}</h1>
         <a href="{{ route('account.orders') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Pesanan Saya</a>
     </div>
 
@@ -23,7 +23,13 @@
             <div>
                 <div>{{ $statusMessage }}</div>
                 @if ($order->tracking_number)
-                    <div class="mt-1">No. resi: <strong>{{ $order->tracking_number }}</strong> <span class="text-muted small">(dikirim {{ $order->shipped_at?->translatedFormat('d M Y') }})</span></div>
+                    @if ($order->courier)
+                        <div class="mt-1">Kurir: <strong class="notranslate">{{ $order->courier }}</strong></div>
+                    @endif
+                    <div class="mt-1">No. resi: <strong class="notranslate">{{ $order->tracking_number }}</strong> <span class="text-muted small">(dikirim {{ $order->shipped_at?->translatedFormat('d M Y') }})</span></div>
+                @endif
+                @if ($order->cancel_reason)
+                    <div class="mt-1">Alasan: {{ $order->cancel_reason }}</div>
                 @endif
             </div>
         </div>

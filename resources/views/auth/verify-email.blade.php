@@ -10,7 +10,7 @@
                 <h1 class="h4 fw-bold text-tatami mb-2">Verifikasi Email</h1>
                 <p class="text-muted small mb-0">
                     Kami sudah mengirim kode 6 angka ke<br>
-                    <strong class="text-body">{{ $user->email }}</strong><br>
+                    <strong class="text-body notranslate">{{ $user->email }}</strong><br>
                     Kode berlaku {{ $expiresMinutes }} menit. Cek juga folder spam.
                 </p>
             </div>

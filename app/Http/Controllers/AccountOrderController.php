@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\OrderException;
 use App\Models\Order;
+use App\Services\OrderNotifier;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class AccountOrderController extends Controller
 {
     public function __construct(
         protected OrderService $orders,
+        protected OrderNotifier $notifier,
     ) {}
 
     public function index(Request $request)
@@ -37,10 +39,13 @@ class AccountOrderController extends Controller
         $this->ensureOwner($request, $order);
 
         try {
-            $this->orders->cancel($order);
+            $cancelled = $this->orders->cancel($order);
         } catch (OrderException $e) {
             return back()->with('error', $e->getMessage());
         }
+
+        // Admin dikabari supaya pesanan ini tidak diproses
+        $this->notifier->cancelled($cancelled, byCustomer: true);
 
         return redirect()->route('account.orders.show', $order)->with('success', 'Pesanan berhasil dibatalkan.');
     }

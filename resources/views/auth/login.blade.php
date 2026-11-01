@@ -6,7 +6,7 @@
     <div class="card border-0 shadow-sm rounded-4 w-100" style="max-width: 400px;">
         <div class="card-body p-4 p-sm-5">
             <div class="text-center mb-4">
-                <h1 class="h4 fw-bold text-tatami mb-1">Tatami Indonesia</h1>
+                <h1 class="h4 fw-bold text-tatami mb-1 notranslate">Tatami Indonesia</h1>
                 <p class="text-muted small mb-0">Masuk ke akun Anda</p>
             </div>
 

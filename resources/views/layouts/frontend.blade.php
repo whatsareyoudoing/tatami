@@ -22,6 +22,7 @@
     <script src="@asset('js/bootstrap.bundle.min.js')"></script>
     {{-- Konfirmasi untuk form dengan atribut data-confirm (misalnya hapus barang di keranjang) --}}
     <script src="@asset('js/admin.js')"></script>
+    @include('partials.frontend.translate')
     @stack('scripts')
 </body>
 </html>

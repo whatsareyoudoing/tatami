@@ -11,7 +11,7 @@
 
             <div class="bg-light rounded-3 p-3 mb-4 small">
                 Anda bisa login memakai email<br>
-                <strong>{{ $user->email }}</strong><br>
+                <strong class="notranslate">{{ $user->email }}</strong><br>
                 atau username <strong>{{ $user->username }}</strong>
             </div>
 

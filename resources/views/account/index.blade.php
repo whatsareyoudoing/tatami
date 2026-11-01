@@ -36,7 +36,7 @@
         @forelse ($recentOrders as $order)
             <a href="{{ route('account.orders.show', $order) }}" @class(['d-flex justify-content-between align-items-center gap-2 text-decoration-none text-reset py-2', 'border-top' => !$loop->first])>
                 <div>
-                    <div class="fw-semibold">{{ $order->order_number }}</div>
+                    <div class="fw-semibold notranslate">{{ $order->order_number }}</div>
                     <div class="small text-muted">{{ $order->created_at->translatedFormat('d M Y') }}</div>
                 </div>
                 <div class="text-end">

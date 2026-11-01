@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\OrderException;
-use App\Mail\OrderPlacedMail;
 use App\Models\Order;
+use App\Services\OrderNotifier;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Checkout: keranjang -> pesanan berstatus "baru" + email ke toko dan ke customer.
@@ -17,6 +15,7 @@ class CheckoutController extends Controller
 {
     public function __construct(
         protected OrderService $orders,
+        protected OrderNotifier $notifier,
     ) {}
 
     public function create(Request $request)
@@ -71,30 +70,10 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', $e->getMessage());
         }
 
-        $this->sendEmails($order);
+        // Email gagal tidak membatalkan pesanan: pesanan tetap tersimpan dan terlihat di dashboard admin
+        $this->notifier->placed($order);
 
         return redirect()->route('account.orders.show', $order)
             ->with('success', 'Pesanan telah di-checkout, silakan tunggu balasan admin dari email Anda.');
-    }
-
-    /**
-     * Email gagal tidak membatalkan pesanan: pesanan tetap tersimpan dan terlihat di dashboard admin.
-     */
-    private function sendEmails(Order $order): void
-    {
-        $order->loadMissing('items', 'user');
-
-        $mails = array_filter([
-            'toko'     => config('shop.order_notify_email') ? [config('shop.order_notify_email'), true] : null,
-            'customer' => [$order->user->email, false],
-        ]);
-
-        foreach ($mails as $to => [$address, $forAdmin]) {
-            try {
-                Mail::to($address)->send(new OrderPlacedMail($order, $forAdmin));
-            } catch (\Throwable $e) {
-                Log::error("Gagal mengirim email pesanan ke {$to}", ['order' => $order->order_number, 'error' => $e->getMessage()]);
-            }
-        }
     }
 }

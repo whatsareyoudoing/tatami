@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 mb-4">
-        <h5 class="fw-bold mb-3">Tatami Indonesia</h5>
+        <h5 class="fw-bold mb-3 notranslate">Tatami Indonesia</h5>
         <p class="text-muted small">Central Industrial Park (CIP), Blok Gamma No. 09 (Jl. Raya Lingkar Timur Km. 4), Desa Kemiri, Sidoarjo, Jawa Timur, 61234</p>
         <div class="mt-3">
           <a href="#" class="text-muted me-3 fs-5"><i class="fab fa-facebook"></i></a>

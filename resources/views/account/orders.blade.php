@@ -7,7 +7,7 @@
         <a href="{{ route('account.orders.show', $order) }}" class="text-decoration-none text-reset">
             <div class="bg-white rounded-3 border p-3 mb-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
                 <div>
-                    <div class="fw-semibold">{{ $order->order_number }}</div>
+                    <div class="fw-semibold notranslate">{{ $order->order_number }}</div>
                     <div class="small text-muted">{{ $order->created_at->translatedFormat('d M Y H:i') }} &middot; {{ $order->items_count }} barang</div>
                 </div>
                 <div class="text-end">
