@@ -22,12 +22,21 @@
         var match = document.cookie.match(/(?:^|;\s*)googtrans=\/id\/([a-z]+)/);
         var current = match && LANGUAGES.indexOf(match[1]) !== -1 ? match[1] : 'id';
 
-        function writeCookie(value, expires) {
-            var base = 'googtrans=' + value + '; path=/' + (expires ? '; expires=' + expires : '');
-            document.cookie = base;
-            // Google kadang menyimpan cookie di domain utama (.tatamiindonesia.id), jadi ikut diatur
-            if (location.hostname.indexOf('.') !== -1 && !/^[\d.]+$/.test(location.hostname)) {
-                document.cookie = base + '; domain=.' + location.hostname.replace(/^www\./, '');
+        // Google ikut menyimpan cookie "googtrans" di domain induk (misal .gresikdev.com untuk
+        // tatami.gresikdev.com). Kalau hanya cookie di domain situs yang diganti, cookie Google tetap
+        // terbaca dan bahasa "nyangkut". Jadi hapus di semua tingkat domain, lalu tulis satu cookie baru.
+        function clearCookies() {
+            var expired = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            document.cookie = expired;
+
+            var host = location.hostname;
+            if (/^[\d.]+$/.test(host) || host.indexOf('.') === -1) {
+                return; // IP atau localhost: tidak ada domain induk
+            }
+            var parts = host.split('.');
+            for (var i = 0; i < parts.length - 1; i++) {
+                document.cookie = expired + '; domain=.' + parts.slice(i).join('.');
+                document.cookie = expired + '; domain=' + parts.slice(i).join('.');
             }
         }
 
@@ -40,13 +49,9 @@
             event.preventDefault();
 
             var lang = link.getAttribute('data-lang');
-            if (lang === current) {
-                return;
-            }
-            if (lang === 'id') {
-                writeCookie('', 'Thu, 01 Jan 1970 00:00:00 GMT');
-            } else {
-                writeCookie('/id/' + lang);
+            clearCookies();
+            if (LANGUAGES.indexOf(lang) !== -1) {
+                document.cookie = 'googtrans=/id/' + lang + '; path=/';
             }
             location.reload();
         });
