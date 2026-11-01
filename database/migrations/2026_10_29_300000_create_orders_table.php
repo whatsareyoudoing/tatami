@@ -27,27 +27,27 @@ return new class extends Migration
             $table->unsignedBigInteger('total'); // jumlah harga barang (ongkir diurus lewat email)
 
             $table->string('tracking_number')->nullable(); // no. resi, diisi admin saat dikirim
-            $table->timestamp('shipped_at')->nullable();
-            $table->timestamp('completed_at')->nullable();
-            $table->timestamp('cancelled_at')->nullable();
+            $table->dateTime('shipped_at')->nullable();
+            $table->dateTime('completed_at')->nullable();
+            $table->dateTime('cancelled_at')->nullable();
             // Pengaman: stok hanya boleh dipotong sekali per pesanan
-            $table->timestamp('stock_deducted_at')->nullable();
+            $table->dateTime('stock_deducted_at')->nullable();
 
-            $table->timestamps();
+            $table->datetimes();
         });
 
-        // Barang di dalam pesanan. Nama, warna, dan harga disalin saat checkout
+        // Barang di dalam pesanan. Nama, varian, dan harga disalin saat checkout
         // supaya pesanan lama tidak berubah kalau produk diubah/dihapus admin.
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_variant_id')->nullable()->constrained()->nullOnDelete();
             $table->string('product_name');
-            $table->string('variant_name');
+            $table->string('variant_name')->nullable(); // "Warna: Light Blue", null untuk produk tanpa varian
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity');
             $table->unsignedBigInteger('subtotal');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

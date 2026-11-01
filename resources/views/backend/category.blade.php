@@ -15,6 +15,7 @@
                 <thead class="table-light">
                     <tr>
                         <th class="text-center" style="width: 60px;">#</th>
+                        <th style="width: 70px;">Gambar</th>
                         <th>Nama</th>
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
@@ -23,6 +24,11 @@
                     @forelse ($categories as $index => $category)
                         <tr>
                             <td class="text-center text-muted">{{ $categories->firstItem() + $index }}</td>
+                            <td>
+                                @if ($category->thumb_url)
+                                    <img src="{{ $category->thumb_url }}" alt="" class="thumb thumb-sm rounded border" loading="lazy">
+                                @endif
+                            </td>
                             <td class="fw-semibold">{{ $category->name }}</td>
                             <td class="text-center text-nowrap">
                                 @can('update_category')
@@ -35,7 +41,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center text-muted py-4">Belum ada kategori.</td>
+                            <td colspan="4" class="text-center text-muted py-4">Belum ada kategori.</td>
                         </tr>
                     @endforelse
                 </tbody>

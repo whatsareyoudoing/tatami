@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            // Warna dihapus admin -> ikut hilang dari keranjang
+            // Varian dihapus admin -> ikut hilang dari keranjang
             $table->foreignId('product_variant_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('quantity');
-            $table->timestamps();
+            $table->datetimes();
 
             $table->unique(['user_id', 'product_variant_id']);
         });

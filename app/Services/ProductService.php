@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ProductService
 {
@@ -98,6 +100,11 @@ class ProductService
             $product = DB::transaction($callback);
         } catch (\Throwable $e) {
             $this->imageOptimizer->delete(...$this->storedFiles);
+
+            // Lolos validasi tapi ditolak indeks unik DB (dua simpan bersamaan): tampilkan sebagai error form biasa
+            if ($e instanceof UniqueConstraintViolationException && str_contains($e->getMessage(), 'nama_aktif')) {
+                throw ValidationException::withMessages(['nama' => 'Produk dengan nama ini sudah ada.']);
+            }
             throw $e;
         }
 

@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use App\Models\ProductImage;
 use App\Support\YouTube;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 /**
@@ -95,12 +97,21 @@ class ProductRequest extends FormRequest
     }
 
     /**
-     * Link video harus valid, dan produk wajib punya minimal 1 foto atau 1 video
+     * Nama produk tidak boleh sama dengan produk lain, dan produk wajib punya minimal 1 foto atau 1 video
      * (dihitung dari foto yang tersisa setelah dihapus + foto baru + video).
      */
     public function after(): array
     {
         return [
+            function (Validator $validator) {
+                if ($validator->errors()->has('nama') || !$duplicate = $this->duplicateProduct()) {
+                    return;
+                }
+
+                $validator->errors()->add('nama', "Produk \"{$duplicate->nama}\" sudah ada. Kalau ini jenis lain dari produk yang sama, tambahkan sebagai varian di produk tersebut.");
+                // Dipakai form untuk menampilkan link ke produk yang sudah ada
+                session()->flash('duplicate_product', ['id' => $duplicate->id, 'nama' => $duplicate->nama]);
+            },
             function (Validator $validator) {
                 if (filled($this->input('video_url')) && !$this->input('youtube_id')) {
                     $validator->errors()->add('video_url', 'Link YouTube tidak valid. Contoh: https://www.youtube.com/watch?v=xxxxxxxxxxx');
@@ -114,6 +125,23 @@ class ProductRequest extends FormRequest
                 $validator->errors()->add('media', 'Produk wajib punya minimal 1 foto atau link video YouTube.');
             },
         ];
+    }
+
+    /**
+     * Dibandingkan lewat slug supaya huruf besar/kecil dan tanda baca diabaikan ("Bantal" = "bantal!").
+     * Produk yang sudah dihapus tidak dihitung; produk yang sedang diedit dikecualikan.
+     */
+    private function duplicateProduct(): ?Product
+    {
+        $slug = Str::slug((string) $this->input('nama'));
+        if ($slug === '') {
+            return null;
+        }
+
+        return Product::select('id', 'nama')
+            ->when($this->product, fn ($q) => $q->whereKeyNot($this->product->id))
+            ->cursor()
+            ->first(fn (Product $product) => Str::slug($product->nama) === $slug);
     }
 
     private function mediaCount(): int

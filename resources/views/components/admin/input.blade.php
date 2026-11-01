@@ -22,7 +22,8 @@
     // name="variants[0][nama]" -> key old()/error "variants.0.nama"
     $key = trim(str_replace(['[', ']'], ['.', ''], $name), '.');
     $id = $attributes->get('id', str_replace('.', '_', $key));
-    $current = $type === 'password' ? null : old($key, $value);
+    // Password dan file tidak pernah diisi ulang
+    $current = in_array($type, ['password', 'file']) ? null : old($key, $value);
 
     $messages = collect([$key, ...$extraErrors])->map(fn ($k) => $errors->first($k))->filter();
     $inputAttributes = $attributes->except('id')->class(['form-control', 'is-invalid' => $messages->isNotEmpty()]);

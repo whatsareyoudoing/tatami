@@ -23,8 +23,10 @@ class ShopController extends Controller
     public function home()
     {
         $sorotan = Product::active()->forCard()->latest()->take(8)->get();
+        // Kotak "Belanja Sesuai Kebutuhanmu", urut sesuai urutan dibuat di admin
+        $kategori = Category::oldest('id')->get(['id', 'name', 'slug', 'image']);
 
-        return view('frontend.welcome', compact('sorotan'));
+        return view('frontend.welcome', compact('sorotan', 'kategori'));
     }
 
     public function index(Request $request)

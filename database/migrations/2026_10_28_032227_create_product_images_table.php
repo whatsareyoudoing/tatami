@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('product_variant_id')->nullable()->constrained()->nullOnDelete();
             $table->string('image');
             $table->unsignedInteger('urutan')->default(0); // urutan terkecil = foto utama
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

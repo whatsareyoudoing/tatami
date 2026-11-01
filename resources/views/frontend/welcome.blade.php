@@ -81,35 +81,27 @@
         </div>
     </div>
 
-    @php
-        // Kotak kategori: tampilan sama seperti sebelumnya, sekarang menuju daftar produk per kategori.
-        // Slug dibuat dari nama, jadi nama kategori di admin harus sama (misalnya "Sekat Ruang" -> sekat-ruang).
-        $kategoriBeranda = [
-            ['Tatami', 'ico-facade.png'],
-            ['Sekat Ruang', 'ico-cupboard.png'],
-            ['Furniture', 'ico-vase.png'],
-            ['Dekorasi', 'ico-pillow.png'],
-            ['Bantal', 'ico-lamp.png'],
-            ['Lampu Jepang', 'ico-tatami.png'],
-        ];
-    @endphp
-    <div class="container">
-        <h3 class="fw-bold text-center color-tatami">Belanja Sesuai Kebutuhanmu</h3>
-        <div class="row">
-            @foreach ($kategoriBeranda as [$nama, $ikon])
-                <div class="col-6 col-lg-2 p-4">
-                    <a href="{{ route('shop.index', ['kategori' => Str::slug($nama)]) }}" class="text-decoration-none text-reset">
-                        <div class="d-flex justify-content-center flex-column text-center p-2">
-                            <img src="https://tatamiindonesia.id/wp-content/uploads/2024/02/{{ $ikon }}" alt="">
-                            <p class="py-3">
-                                {{ $nama }}
-                            </p>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
+    @if ($kategori->isNotEmpty())
+        <div class="container">
+            <h3 class="fw-bold text-center color-tatami">Belanja Sesuai Kebutuhanmu</h3>
+            <div class="row">
+                @foreach ($kategori as $item)
+                    <div class="col-6 col-lg-2 p-4">
+                        <a href="{{ route('shop.index', ['kategori' => $item->slug]) }}" class="text-decoration-none text-reset">
+                            <div class="d-flex justify-content-center flex-column text-center p-2">
+                                @if ($item->thumb_url)
+                                    <img src="{{ $item->thumb_url }}" alt="{{ $item->name }}" class="img-fluid" loading="lazy">
+                                @endif
+                                <p class="py-3">
+                                    {{ $item->name }}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
         </div>
-    </div>
+    @endif
 
     <div class="container">
         <div class="row">

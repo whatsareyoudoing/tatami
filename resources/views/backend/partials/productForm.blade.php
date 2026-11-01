@@ -39,7 +39,14 @@
 
 <x-admin.card title="Informasi Produk">
     <div class="row g-3">
-        <x-admin.input name="nama" label="Nama Produk" :value="$product?->nama" wrapper="col-md-8" />
+        <div class="col-md-8">
+            <x-admin.input name="nama" label="Nama Produk" :value="$product?->nama" wrapper="" />
+            @if ($duplicate = session('duplicate_product'))
+                <a href="{{ route('product.edit', $duplicate['id']) }}" class="small d-inline-block mt-1">
+                    <i class="fas fa-arrow-right me-1"></i> Buka produk "{{ $duplicate['nama'] }}"
+                </a>
+            @endif
+        </div>
         <x-admin.select name="category_id" label="Kategori" :options="$categories->pluck('name', 'id')" :value="$product?->category_id" placeholder="Pilih kategori" wrapper="col-md-4" />
 
         <x-admin.input type="textarea" name="deskripsi" label="Deskripsi" :value="$product?->deskripsi" rows="5" wrapper="col-12" />
@@ -150,12 +157,32 @@
             variable.classList.toggle('d-none', !toggle.checked);
         });
 
-        // Produk bervarian diubah menjadi tanpa varian: minta konfirmasi dulu
-        toggle.closest('form').addEventListener('submit', function (event) {
+        var form = toggle.closest('form');
+        var submitButtons = form.querySelectorAll('button[type="submit"]');
+        submitButtons.forEach(function (button) {
+            button.dataset.label = button.innerHTML;
+        });
+
+        // Produk bervarian diubah menjadi tanpa varian: minta konfirmasi dulu.
+        // Setelah terkirim, tombol Simpan dikunci supaya klik dua kali tidak membuat produk dobel.
+        form.addEventListener('submit', function (event) {
             if (toggle.dataset.wasVariable === '1' && !toggle.checked
                 && !confirm('Semua varian lama akan dihapus dan diganti harga/stok tunggal. Lanjutkan?')) {
                 event.preventDefault();
+                return;
             }
+            submitButtons.forEach(function (button) {
+                button.disabled = true;
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+            });
+        });
+
+        // Kembali ke halaman ini lewat tombol Back browser: buka lagi kuncinya
+        window.addEventListener('pageshow', function () {
+            submitButtons.forEach(function (button) {
+                button.disabled = false;
+                button.innerHTML = button.dataset.label;
+            });
         });
 
         // Mulai dari index terbesar + 1 supaya tidak bentrok dengan baris yang sudah ada

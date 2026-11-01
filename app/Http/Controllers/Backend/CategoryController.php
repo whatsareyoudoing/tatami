@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Services\ImageOptimizer;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -20,10 +21,14 @@ class CategoryController extends Controller implements HasMiddleware
         ];
     }
 
+    public function __construct(
+        protected ImageOptimizer $imageOptimizer
+    ) {}
+
     public function index()
     {
         // Tampilkan semua kategori, urutkan dari yang terbaru
-        $categories = Category::select('id', 'name')->latest()->paginate(10);
+        $categories = Category::select('id', 'name', 'image')->latest()->paginate(10);
         return view('backend.category', compact('categories'));
     }
 
@@ -34,7 +39,8 @@ class CategoryController extends Controller implements HasMiddleware
 
     public function store(CategoryRequest $request)
     {
-        Category::create($request->validated());
+        $image = $this->imageOptimizer->store($request->file('image')->getRealPath(), 'categories');
+        Category::create([...$request->safe()->only(['name', 'slug']), 'image' => $image]);
 
         return redirect()->route('category.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
@@ -46,7 +52,18 @@ class CategoryController extends Controller implements HasMiddleware
 
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->validated());
+        $oldImage = $category->image;
+        $data = $request->safe()->only(['name', 'slug']);
+        if ($request->hasFile('image')) {
+            $data['image'] = $this->imageOptimizer->store($request->file('image')->getRealPath(), 'categories');
+        }
+
+        $category->update($data);
+
+        // Gambar lama dihapus setelah gambar baru tersimpan
+        if (isset($data['image']) && $oldImage) {
+            $this->imageOptimizer->delete($oldImage);
+        }
 
         return redirect()->route('category.index')->with('success', 'Kategori berhasil diperbarui!');
     }
@@ -60,6 +77,9 @@ class CategoryController extends Controller implements HasMiddleware
         }
 
         $category->delete();
+        if ($category->image) {
+            $this->imageOptimizer->delete($category->image);
+        }
 
         return redirect()->route('category.index')->with('success', 'Kategori berhasil dihapus!');
     }

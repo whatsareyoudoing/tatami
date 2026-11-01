@@ -36,16 +36,22 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($this->category)],
-            'slug' => ['required', Rule::unique('categories')->ignore($this->category)],
+            'name'  => ['required', 'string', 'max:255'],
+            // Keunikan nama dicek lewat slug: huruf besar/kecil dan tanda baca diabaikan ("Bantal" = "bantal!")
+            'slug'  => ['required', Rule::unique('categories')->ignore($this->category)],
+            // Wajib saat tambah; saat edit boleh kosong (gambar lama tetap dipakai)
+            'image' => [$this->category ? 'nullable' : 'required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 
     public function messages(): array
     {
         return [
+            'image.required' => 'Gambar kategori wajib diisi.',
+            'image.image'    => 'File harus berupa gambar.',
+            'image.max'      => 'Gambar maksimal 2 MB.',
             'slug.required' => 'Nama kategori harus mengandung huruf atau angka.',
-            'slug.unique'   => 'Nama kategori terlalu mirip dengan kategori yang sudah ada.',
+            'slug.unique'   => 'Kategori dengan nama ini sudah ada.',
         ];
     }
 }
