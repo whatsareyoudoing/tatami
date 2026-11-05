@@ -3,8 +3,9 @@
 @section('title', 'Checkout')
 
 @section('content')
+<x-page-hero title="Checkout" :crumbs="['Keranjang' => route('cart.index'), 'Checkout' => null]" />
+
 <div class="container py-4 mb-4">
-    <h1 class="h3 fw-bold color-tatami mb-4">Checkout</h1>
 
     <form action="{{ route('checkout.store') }}" method="POST">
         @csrf
@@ -14,11 +15,11 @@
                     <h2 class="h6 fw-bold mb-3">Alamat Pengiriman</h2>
 
                     <x-admin.input name="recipient_name" label="Nama Penerima" :value="$defaults['recipient_name']" required autocomplete="name" />
-                    <x-admin.input name="phone" type="tel" label="Nomor HP / WhatsApp" :value="$defaults['phone']" required autocomplete="tel" placeholder="08123456789" />
+                    <x-admin.input name="phone" type="tel" label="Nomor HP / WhatsApp" :value="$defaults['phone']" required autocomplete="tel" />
                     <x-admin.input type="textarea" name="address" label="Alamat Lengkap" :value="$defaults['address']" rows="3" required
-                                   placeholder="Nama jalan, nomor rumah, RT/RW, kelurahan, kecamatan, kota, kode pos" />
+                                   hint="Nama jalan, nomor rumah, RT/RW, kelurahan, kecamatan, kota, kode pos." />
                     <x-admin.input type="textarea" name="note" label="Catatan" optional rows="2" wrapper="mb-0"
-                                   placeholder="Misalnya: kirim setelah jam 5 sore" />
+                                   hint="Misalnya: kirim setelah jam 5 sore." />
                 </div>
             </div>
 

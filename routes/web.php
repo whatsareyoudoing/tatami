@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountOrderController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Backend\ArticleController as BackendArticleController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -22,9 +24,8 @@ Route::get('/produk/{slug}', [ShopController::class, 'show'])->name('shop.show')
 Route::get('/tentang', function () {
     return view('frontend/tentang');
 });
-Route::get('/artikel', function () {
-    return view('frontend/artikel');
-});
+Route::get('/artikel', [ArticleController::class, 'index'])->name('blog.index');
+Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('blog.show');
 Route::get('/kontak', function () {
     return view('frontend/kontak');
 });
@@ -99,5 +100,9 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         Route::resource('categories', CategoryController::class)->except('show')->names('category');
         Route::resource('products', ProductController::class)->except('show')->names('product');
+
+        // Upload gambar dari CKEditor (dibatasi 30 upload per menit)
+        Route::post('articles/upload-image', [BackendArticleController::class, 'uploadImage'])->middleware('throttle:30,1')->name('article.upload-image');
+        Route::resource('articles', BackendArticleController::class)->except('show')->names('article');
     });
 });

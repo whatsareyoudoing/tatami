@@ -1,6 +1,6 @@
 {{--
     Kerangka halaman akun customer: layout website (navbar + footer) + menu akun di kiri.
-    Halaman turunan mengisi @section('account').
+    Halaman turunan mengisi @section('account') dan $hero (judul + breadcrumb, lihat components/page-hero).
 --}}
 @extends('layouts.frontend')
 
@@ -11,6 +11,9 @@
 @endpush
 
 @section('content')
+@php $hero ??= ['title' => 'Akun Saya', 'crumbs' => ['Akun Saya' => null]]; @endphp
+<x-page-hero :title="$hero['title']" :crumbs="$hero['crumbs']" />
+
 <div class="container py-5">
     <div class="row g-4">
         <aside class="col-lg-3">

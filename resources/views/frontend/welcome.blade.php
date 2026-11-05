@@ -7,7 +7,7 @@
 {{-- content --}}
     <div class="container-fluid bg-light">
         <div class="container d-flex justify-content-center">
-            <img src="https://tatamiindonesia.id/wp-content/uploads/2025/07/welcome-image-New.jpg" class="img-fluid" alt="...">
+            <img src="@asset('images/site/welcome-image-New.jpg')" class="img-fluid" alt="...">
         </div>
     </div>
 
@@ -25,53 +25,39 @@
         </p>
     </div>
 
-    <div class="container">
-        <div class="row pb-4">
-            <div class="col">
-                <h2 class="color-tatami text-center">HIGHLIGHTS</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3 py-3 px-5 px-lg-2">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2025/07/low4-2-300x300.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text fs-5">Low Furniture: Luas & Tenang</p>
-                    </div>
+    {{-- HIGHLIGHTS: 4 artikel terbit terbaru, disembunyikan kalau belum ada artikel --}}
+    @if ($artikel->isNotEmpty())
+        <div class="container">
+            <div class="row pb-4">
+                <div class="col">
+                    <h2 class="color-tatami text-center">HIGHLIGHTS</h2>
                 </div>
             </div>
-            <div class="col-md-3 py-3 px-5 px-lg-2">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2025/07/memotong-1-300x300.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text fs-5">Tips Merawat Tatami</p>
+            <div class="row">
+                @foreach ($artikel as $item)
+                    <div class="col-md-3 py-3 px-5 px-lg-2">
+                        <a href="{{ route('blog.show', $item->slug) }}" class="card h-100 text-decoration-none text-reset article-card">
+                            @if ($item->sampul_thumb_url)
+                                <img src="{{ $item->sampul_thumb_url }}" class="card-img-top article-card-img article-card-img-square" alt="{{ $item->judul }}" loading="lazy">
+                            @else
+                                <div class="card-img-top article-card-img article-card-img-square d-flex align-items-center justify-content-center color-tatami">
+                                    <i class="fas fa-newspaper fs-1"></i>
+                                </div>
+                            @endif
+                            <div class="card-body">
+                                <p class="card-text fs-5">{{ $item->judul }}</p>
+                            </div>
+                        </a>
                     </div>
-                </div>
+                @endforeach
             </div>
-            <div class="col-md-3 py-3 px-5 px-lg-2">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2025/08/cb1716e0c72337ea3c76333d2b0ef35bresize-300x300.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text fs-5">Apa itu Matsuri?</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 py-3 px-5 px-lg-2">
-                <div class="card h-100">
-                    <img src="https://tatamiindonesia.id/wp-content/uploads/2025/07/6-300x300.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text fs-5">Inspirasi Ruangan Santai ala Jepang</p>
-                    </div>
+            <div class="row pt-4">
+                <div class="col d-flex justify-content-center">
+                    <a href="{{ route('blog.index') }}" class="btn btn-tatami">Artikel Lainnya</a>
                 </div>
             </div>
         </div>
-        <div class="row pt-4">
-            <div class="col d-flex justify-content-center">
-                <a href="#" class="btn btn-tatami">Artikel Lainnya</a>
-            </div>
-        </div>
-
-    </div>
+    @endif
     <div class="container bg-white my-5 rounded-4">
         <div class="row p-4">
             <h2 class="fw-bold color-tatami" style="font-size: clamp(2rem, 5vw, 3.5rem);">Belanja Tatami dan Furniture Jepang Paling Nyaman</h2>

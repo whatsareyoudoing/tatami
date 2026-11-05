@@ -86,7 +86,7 @@
 
     <div class="row g-3 align-items-end">
         <x-admin.input name="video_url" label="Link Video YouTube" :value="$videoUrl" optional wrapper="col-md-8 mb-0"
-                       placeholder="https://www.youtube.com/watch?v=..." hint="Boleh link youtube.com/watch, youtu.be, atau youtube.com/shorts. Kosongkan untuk menghapus video." />
+                       hint="Boleh link youtube.com/watch, youtu.be, atau youtube.com/shorts. Kosongkan untuk menghapus video." />
         <div class="col-md-4">
             <img id="video-preview" src="" alt="Pratinjau video" class="rounded border d-none" style="width: 160px; aspect-ratio: 16 / 9; object-fit: cover;">
         </div>
@@ -104,8 +104,8 @@
     {{-- Tanpa varian: harga/stok/SKU langsung --}}
     <fieldset id="simple-pricing" @disabled($hasVariants) @class(['d-none' => $hasVariants])>
         <div class="row g-3">
-            <x-admin.input type="number" name="harga" label="Harga (Rp)" :value="$default?->harga" min="0" placeholder="193000" wrapper="col-md-3" />
-            <x-admin.input type="number" name="harga_coret" label="Harga Coret (Rp)" :value="$default?->harga_coret" min="0" placeholder="230000" optional wrapper="col-md-3" />
+            <x-admin.input type="number" name="harga" label="Harga (Rp)" :value="$default?->harga" min="0" wrapper="col-md-3" />
+            <x-admin.input type="number" name="harga_coret" label="Harga Coret (Rp)" :value="$default?->harga_coret" min="0" optional wrapper="col-md-3" />
             <x-admin.input type="number" name="stok" label="Stok" :value="$default?->stok ?? 0" min="0" wrapper="col-md-2" />
             <x-admin.input name="sku" label="SKU" :value="$default?->sku" optional wrapper="col-md-4" />
         </div>
@@ -114,7 +114,7 @@
     {{-- Dengan varian: nama pilihan + daftar varian --}}
     <fieldset id="variant-pricing" @disabled(!$hasVariants) @class(['d-none' => !$hasVariants])>
         <x-admin.input name="variant_label" label="Nama Pilihan" :value="$product?->variant_label" list="variant-label-options"
-                       placeholder="Warna" wrapper="col-md-4 mb-3" hint="Tampil sebagai judul pilihan di halaman produk." />
+                       wrapper="col-md-4 mb-3" hint="Tampil sebagai judul pilihan di halaman produk." />
         <datalist id="variant-label-options">
             <option value="Warna"><option value="Ukuran"><option value="Jumlah Daun"><option value="Tebal"><option value="Model">
         </datalist>

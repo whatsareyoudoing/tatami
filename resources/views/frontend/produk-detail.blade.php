@@ -24,16 +24,15 @@
     ]]);
 @endphp
 
+{{-- Judul besar = kategori; nama produk tetap di samping foto, dekat harga --}}
+<x-page-hero tag="div" :title="$product->category?->name ?? 'Produk'"
+             :crumbs="array_merge(
+                 ['Produk' => route('shop.index')],
+                 $product->category ? [$product->category->name => route('shop.index', ['kategori' => $product->category->slug])] : [],
+                 [$product->nama => null],
+             )" />
+
 <div class="container py-4 mb-4">
-    <nav aria-label="breadcrumb" class="small mb-3">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="{{ route('shop.index') }}" class="color-tatami">Produk</a></li>
-            @if ($product->category)
-                <li class="breadcrumb-item"><a href="{{ route('shop.index', ['kategori' => $product->category->slug]) }}" class="color-tatami">{{ $product->category->name }}</a></li>
-            @endif
-            <li class="breadcrumb-item active" aria-current="page">{{ $product->nama }}</li>
-        </ol>
-    </nav>
 
     <div class="row g-4">
         {{-- Galeri: video (kalau ada) lalu foto-foto --}}

@@ -34,7 +34,7 @@
         <h6 class="text-uppercase fw-bold mb-3">Berlangganan Newsletter</h6>
         <p class="text-muted small">Dapatkan info pembaruan dan tips terbaru langsung ke email Anda.</p>
         <div class="input-group">
-          <input type="email" class="form-control" placeholder="Email Anda">
+          <input type="email" class="form-control" placeholder="Masukkan email" aria-label="Email">
           <button class="btn btn-tatami" type="button"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>

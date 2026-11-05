@@ -1,8 +1,8 @@
 @extends('account.layout')
 
-@section('account')
-    <h1 class="h3 fw-bold mb-4">Pesanan Saya</h1>
+@php $hero = ['title' => 'Pesanan Saya', 'crumbs' => ['Akun Saya' => route('account.index'), 'Pesanan Saya' => null]]; @endphp
 
+@section('account')
     @forelse ($orders as $order)
         <a href="{{ route('account.orders.show', $order) }}" class="text-decoration-none text-reset">
             <div class="bg-white rounded-3 border p-3 mb-3 d-flex flex-wrap justify-content-between align-items-center gap-2">

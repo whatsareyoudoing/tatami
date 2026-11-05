@@ -22,6 +22,7 @@ class RbacSeeder extends Seeder
         'view_category', 'create_category', 'update_category', 'delete_category',
         'view_product', 'create_product', 'update_product', 'delete_product',
         'view_order', 'update_order',
+        'view_article', 'create_article', 'update_article', 'delete_article',
 
         // Fitur customer di website
         'manage_cart', 'checkout',
@@ -61,7 +62,13 @@ class RbacSeeder extends Seeder
             );
         }
 
-        // Akun admin awal supaya bisa login setelah instalasi baru
+        // Akun admin awal, hanya untuk instalasi baru. Kalau sudah ada admin (misalnya emailnya sudah
+        // diganti di hosting), seeder tidak membuat akun "admin/admin" baru saat dijalankan ulang.
+        $adminRoleId = Role::where('name', 'admin')->value('id');
+        if (User::whereHas('roles', fn ($q) => $q->whereKey($adminRoleId))->exists()) {
+            return;
+        }
+
         $admin = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
@@ -72,7 +79,7 @@ class RbacSeeder extends Seeder
             ]
         );
 
-        $admin->roles()->syncWithoutDetaching([Role::where('name', 'admin')->value('id')]);
+        $admin->roles()->syncWithoutDetaching([$adminRoleId]);
 
         if (!$admin->hasVerifiedEmail()) {
             $admin->markEmailAsVerified();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -25,8 +26,10 @@ class ShopController extends Controller
         $sorotan = Product::active()->forCard()->latest()->take(8)->get();
         // Kotak "Belanja Sesuai Kebutuhanmu", urut sesuai urutan dibuat di admin
         $kategori = Category::oldest('id')->get(['id', 'name', 'slug', 'image']);
+        // Bagian "HIGHLIGHTS" = 4 artikel terbit terbaru
+        $artikel = Article::published()->latest('published_at')->take(4)->get(['id', 'judul', 'slug', 'sampul', 'published_at']);
 
-        return view('frontend.welcome', compact('sorotan', 'kategori'));
+        return view('frontend.welcome', compact('sorotan', 'kategori', 'artikel'));
     }
 
     public function index(Request $request)

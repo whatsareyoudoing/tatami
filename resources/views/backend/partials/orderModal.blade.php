@@ -123,7 +123,7 @@
                             <div class="row g-2 align-items-start">
                                 <div class="col-md-4">
                                     <label for="kurir-{{ $order->id }}" class="form-label fw-semibold">Kurir</label>
-                                    <input type="text" id="kurir-{{ $order->id }}" name="courier" placeholder="Contoh: JNE REG" maxlength="50" required
+                                    <input type="text" id="kurir-{{ $order->id }}" name="courier" placeholder="Masukkan kurir" maxlength="50" required
                                            value="{{ $isOpen ? old('courier') : '' }}"
                                            @class(['form-control', 'is-invalid' => $isOpen && $errors->has('courier')])>
                                     @if ($isOpen && $errors->has('courier'))
@@ -133,7 +133,7 @@
                                 <div class="col-md-8">
                                     <label for="resi-{{ $order->id }}" class="form-label fw-semibold">No. Resi</label>
                                     <div class="input-group has-validation">
-                                        <input type="text" id="resi-{{ $order->id }}" name="tracking_number" placeholder="Contoh: 1234567890" maxlength="100" required
+                                        <input type="text" id="resi-{{ $order->id }}" name="tracking_number" placeholder="Masukkan no. resi" maxlength="100" required
                                                value="{{ $isOpen ? old('tracking_number') : '' }}"
                                                @class(['form-control', 'is-invalid' => $isOpen && $errors->has('tracking_number')])>
                                         <button type="submit" class="btn btn-tatami"><i class="fas fa-truck me-1"></i> Tandai Dikirim</button>
@@ -159,7 +159,7 @@
                                 @method('PATCH')
                                 <div class="flex-grow-1">
                                     <input type="text" name="cancel_reason" maxlength="255" aria-label="Alasan pembatalan"
-                                           placeholder="Alasan pembatalan (opsional), misal: stok habis"
+                                           placeholder="Masukkan alasan pembatalan (opsional)"
                                            value="{{ $isOpen ? old('cancel_reason') : '' }}"
                                            @class(['form-control', 'is-invalid' => $isOpen && $errors->has('cancel_reason')])>
                                     @if ($isOpen && $errors->has('cancel_reason'))

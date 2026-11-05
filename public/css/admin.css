@@ -107,3 +107,6 @@
 }
 .thumb-sm { width: 38px; height: 38px; }
 .thumb-lg { width: 100px; height: 100px; }
+
+/* Kode OTP: placeholder tulisan biasa, tidak ikut huruf besar & renggang */
+.otp-input::placeholder { font-size: 1rem; font-weight: normal; letter-spacing: normal; }

@@ -5,7 +5,7 @@
     @endif
 
     <div class="row g-3">
-        <x-admin.input name="variants[{{ $i }}][nama]" label="Nama Varian" :value="$row['nama'] ?? ''" placeholder="Light Blue / 90x180 / 2 Daun"
+        <x-admin.input name="variants[{{ $i }}][nama]" label="Nama Varian" :value="$row['nama'] ?? ''"
                        id="variant-nama-{{ $i }}" wrapper="col-md-4" />
         <x-admin.input type="number" name="variants[{{ $i }}][harga]" label="Harga (Rp)" :value="$row['harga'] ?? ''" min="0"
                        id="variant-harga-{{ $i }}" wrapper="col-md-3" />

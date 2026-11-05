@@ -6,14 +6,14 @@
         ['label' => 'Tentang',       'url' => '/tentang',      'match' => 'tentang'],
         ['label' => 'Custom Tatami', 'url' => '/custom-tatami', 'match' => 'custom-tatami'],
         ['label' => 'Kontak',        'url' => '/kontak',       'match' => 'kontak'],
-        // ['label' => 'Artikel',       'url' => '/artikel',      'match' => 'artikel*'],
+        ['label' => 'Artikel',       'url' => '/artikel',      'match' => 'artikel*'],
     ];
 @endphp
 
 <nav class="navbar navbar-expand-lg bg-white shadow-2xs sticky-top">
   <div class="container">
     <a class="navbar-brand fw-bold text-primary d-none d-lg-block" href="{{ url('/') }}">
-        <img src="https://tatamiindonesia.id/wp-content/uploads/2025/06/cropped-icon-website-1.png" alt="Tatami Indonesia">
+        <img src="@asset('images/site/cropped-icon-website-1.png')" alt="Tatami Indonesia">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

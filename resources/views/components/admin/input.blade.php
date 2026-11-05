@@ -5,7 +5,8 @@
 
     wrapper     = class pembungkus (default mb-3, di dalam grid bisa "col-md-6")
     extraErrors = key error lain yang ikut ditampilkan di field ini
-    Atribut lain (placeholder, min, required, ...) diteruskan ke <input>.
+    Atribut lain (min, required, ...) diteruskan ke <input>.
+    placeholder otomatis "Masukkan <label>" (label "Ulangi ..." dipakai apa adanya), bisa ditimpa lewat atribut placeholder.
 --}}
 @props([
     'name',
@@ -26,7 +27,16 @@
     $current = in_array($type, ['password', 'file']) ? null : old($key, $value);
 
     $messages = collect([$key, ...$extraErrors])->map(fn ($k) => $errors->first($k))->filter();
-    $inputAttributes = $attributes->except('id')->class(['form-control', 'is-invalid' => $messages->isNotEmpty()]);
+    // "Harga (Rp)" -> "Masukkan harga"; singkatan/merek (HP, SKU, WhatsApp) tidak dikecilkan
+    $placeholderText = collect(explode(' ', trim(preg_replace('/\s*\(.*?\)/', '', (string) $label))))
+        ->map(fn ($word) => preg_match('/^\p{Lu}\p{Ll}*$/u', $word) ? mb_strtolower($word) : $word)
+        ->implode(' ');
+    $placeholder = $attributes->get('placeholder', match (true) {
+        ! $label || $type === 'file' => null,
+        str_starts_with($label, 'Ulangi ') => ucfirst($placeholderText),
+        default => 'Masukkan ' . $placeholderText,
+    });
+    $inputAttributes = $attributes->except(['id', 'placeholder'])->merge(['placeholder' => $placeholder])->class(['form-control', 'is-invalid' => $messages->isNotEmpty()]);
 @endphp
 
 <div class="{{ $wrapper }}">

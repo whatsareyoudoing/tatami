@@ -12,7 +12,7 @@
             <div class="row g-3">
                 <x-admin.input name="name" label="Nama Lengkap" wrapper="col-md-6" />
                 <x-admin.input name="username" label="Username" wrapper="col-md-6" />
-                <x-admin.input name="email" type="email" label="Email" placeholder="email@example.com" wrapper="col-md-6" />
+                <x-admin.input name="email" type="email" label="Email" wrapper="col-md-6" />
                 <x-admin.select name="role" label="Role" :options="$roles->pluck('label', 'id')" placeholder="Pilih role" wrapper="col-md-6" />
                 <x-admin.input name="password" type="password" label="Password" hint="Minimal 8 karakter." wrapper="col-md-6" />
             </div>

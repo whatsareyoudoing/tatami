@@ -9,6 +9,7 @@
         ['label' => 'Pelanggan', 'icon' => 'fa-users',       'route' => 'customer.index', 'active' => 'customer.*', 'can' => 'view_customer'],
         ['label' => 'Kategori',  'icon' => 'fa-archive', 'route' => 'category.index', 'active' => 'category.*', 'can' => 'view_category'],
         ['label' => 'Produk',    'icon' => 'fa-box',     'route' => 'product.index',  'active' => 'product.*',  'can' => 'view_product'],
+        ['label' => 'Artikel',   'icon' => 'fa-newspaper', 'route' => 'article.index', 'active' => 'article.*', 'can' => 'view_article'],
     ];
 @endphp
 

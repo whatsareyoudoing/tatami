@@ -1,8 +1,8 @@
 @extends('account.layout')
 
-@section('account')
-    <h1 class="h3 fw-bold mb-4">Akun Saya</h1>
+@php $hero = ['title' => 'Akun Saya', 'crumbs' => ['Akun Saya' => null]]; @endphp
 
+@section('account')
     <x-admin.card title="Data Akun">
         <x-slot:actions>
             <a href="{{ route('account.edit') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-pen me-1"></i> Ubah</a>

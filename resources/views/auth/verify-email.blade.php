@@ -21,7 +21,7 @@
                 @csrf
                 <x-admin.input name="code" label="Kode Verifikasi" required autofocus
                                inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"
-                               placeholder="000000" class="text-center fs-4 fw-bold" style="letter-spacing: .5rem;" />
+                               class="text-center fs-4 fw-bold otp-input" style="letter-spacing: .5rem;" />
 
                 <button type="submit" class="btn btn-tatami w-100 py-2">
                     <i class="fas fa-check me-1"></i> Verifikasi

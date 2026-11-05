@@ -58,3 +58,88 @@
     border-color: #245237;
     color: #fff;
 }
+
+/* ---------- Artikel ---------- */
+.article-card { transition: transform .15s; }
+.article-card:hover { transform: translateY(-3px); }
+.article-card-img { height: 200px; object-fit: cover; background: #e8f3ec; }
+.article-card-img-square { height: auto; aspect-ratio: 1 / 1; }
+
+/* ---------- Judul halaman (components/page-hero): hijau tatami + motif anyaman igusa,
+   foto opsional tampil samar di belakang (--hero-img) ---------- */
+.page-hero {
+    position: relative;
+    color: #fff;
+    padding: 2.75rem 0 3rem;
+    background-color: #1b4029;
+    background-image:
+        repeating-linear-gradient(90deg, transparent 0 158px, rgba(255, 255, 255, .07) 158px 160px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .035) 0 1px, transparent 1px 5px),
+        linear-gradient(120deg, rgba(36, 82, 55, .97) 0%, rgba(27, 64, 41, .9) 55%, rgba(16, 40, 26, .82) 100%),
+        var(--hero-img, none);
+    background-size: auto, auto, auto, cover;
+    background-position: center;
+}
+.page-hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #c8a96a, #e6d3a3 50%, #c8a96a);
+}
+.page-hero .breadcrumb {
+    --bs-breadcrumb-divider: "\203A";
+    --bs-breadcrumb-divider-color: rgba(255, 255, 255, .55);
+    --bs-breadcrumb-item-active-color: rgba(255, 255, 255, .75);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .85rem;
+}
+.page-hero .breadcrumb-item + .breadcrumb-item::before { font-size: 1rem; line-height: 1; padding-right: .6rem; }
+.page-hero .breadcrumb-item + .breadcrumb-item { padding-left: .6rem; }
+.page-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.page-hero .breadcrumb a:hover { color: #e6d3a3; }
+.page-hero-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    line-height: 1.2;
+    margin: 0;
+    max-width: 900px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .25);
+}
+
+/* Detail artikel */
+.article-main { background: #fff; border: 1px solid #e5e5e5; }
+.article-main-img { width: 100%; max-height: 480px; object-fit: cover; display: block; }
+.article-main-body { padding: 1.5rem; }
+@media (min-width: 768px) { .article-main-body { padding: 1.5rem 2.5rem 2.5rem; } }
+.article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; font-size: .75rem; text-transform: uppercase; color: #495057; margin-bottom: 1.5rem; }
+.article-meta-dot { width: 4px; height: 4px; border-radius: 50%; background: #245237; }
+.article-products { border-top: 1px solid #e5e5e5; margin-top: 2rem; padding-top: 1.5rem; }
+.article-side-title { font-size: .9rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; color: #245237; }
+@media (min-width: 992px) { .article-sidebar { position: sticky; top: 90px; } }
+.article-latest-item { display: flex; gap: .85rem; align-items: center; text-decoration: none; color: inherit; padding: .6rem 0; }
+.article-latest-item + .article-latest-item { border-top: 1px solid #f0f0f0; }
+.article-latest-thumb { width: 60px; height: 60px; object-fit: cover; flex-shrink: 0; background: #e8f3ec; }
+.article-latest-title { font-size: .875rem; font-weight: 600; line-height: 1.35; }
+.article-latest-item:hover .article-latest-title { color: #245237; }
+.article-latest-item.active { background: #eef5f0; margin: 0 -.6rem; padding-left: .6rem; padding-right: .6rem; border-left: 3px solid #245237; }
+.article-latest-item.active .article-latest-title { color: #245237; }
+.article-sidebar .pagination { --bs-pagination-padding-x: .6rem; --bs-pagination-padding-y: .25rem; --bs-pagination-font-size: .8rem; flex-wrap: wrap; margin-bottom: 0; }
+.article-latest-date { font-size: .7rem; text-transform: uppercase; color: #6c757d; margin-top: .2rem; }
+
+/* Isi dari CKEditor */
+.article-content { font-size: 1.05rem; line-height: 1.8; }
+.article-content h2, .article-content h3 { font-weight: 700; color: #245237; margin: 2rem 0 1rem; }
+.article-content img { max-width: 100%; height: auto; border-radius: .5rem; }
+.article-content figure { margin: 1.5rem 0; }
+.article-content figure.image { text-align: center; }
+.article-content figcaption { font-size: .875rem; color: #6c757d; margin-top: .5rem; }
+.article-content blockquote { border-left: 4px solid #245237; padding: .5rem 1rem; color: #495057; background: #f8f9fa; }
+.article-content figure.table { overflow-x: auto; }
+.article-content table { width: 100%; border-collapse: collapse; }
+.article-content th, .article-content td { border: 1px solid #dee2e6; padding: .5rem; }
+.article-content a { color: #245237; }

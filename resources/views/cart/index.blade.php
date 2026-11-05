@@ -3,8 +3,9 @@
 @section('title', 'Keranjang')
 
 @section('content')
+<x-page-hero title="Keranjang Belanja" :crumbs="['Keranjang Belanja' => null]" />
+
 <div class="container py-4 mb-4">
-    <h1 class="h3 fw-bold color-tatami mb-4">Keranjang Belanja</h1>
 
     @include('partials.admin.flash')
     @error('quantity')

@@ -3,24 +3,25 @@
 @section('title', 'Custom Tatami')
 
 @section('content')
+    <x-page-hero title="Custom Tatami" :crumbs="['Custom Tatami' => null]" />
 {{-- navbar --}}
 
 {{-- content --}}
     <div class="container my-5">
         <div class="row p-0">
             <div class="col-md-8 py-1 px-3 px-md-1 ">
-                <img src="https://tatamiindonesia.id/wp-content/uploads/2025/06/1-2.jpg" alt="" class="img-fluid">
+                <img src="@asset('images/site/1-2.jpg')" alt="" class="img-fluid">
             </div>
             <div class="col-md-4 py-1 px-3 px-md-1 d-flex items-center">
-                <img src="https://tatamiindonesia.id/wp-content/uploads/2025/06/2.jpg" alt="" class="img-fluid">
+                <img src="@asset('images/site/2.jpg')" alt="" class="img-fluid">
             </div>
         </div>
         <div class="row p-0">
             <div class="col-md-4 py-1 px-3 px-md-1 d-flex items-center">
-                <img src="https://tatamiindonesia.id/wp-content/uploads/2025/06/3-1.jpg" alt="" class="img-fluid">
+                <img src="@asset('images/site/3-1.jpg')" alt="" class="img-fluid">
             </div>
             <div class="col-md-8 py-1 px-3 px-md-1">
-                <img src="https://tatamiindonesia.id/wp-content/uploads/2025/06/4-1.jpg" alt="" class="img-fluid">
+                <img src="@asset('images/site/4-1.jpg')" alt="" class="img-fluid">
             </div>
         </div>
     </div>
@@ -28,7 +29,7 @@
     <div class="container mb-3">
         <div class="row text-center color-tatami">
             <h3 class="fw-bold">Custom Tatami</h3>
-            <h1 class="fw-bold">Original Japanase Igusa</h1>
+            <h2 class="fw-bold">Original Japanase Igusa</h2>
             <p class="fs-4 ">Lebar Tatami dengan Pita Maksimal 90 cm dan 95 cm (Khusus Natural Green).
                 Lihat simulasi perhitungan harga Tatami scroll ke bawah.</p>
         </div>
@@ -38,43 +39,43 @@
         <div class="container color-tatami text-center ">
             <div class="row py-3">
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-3.jpg" alt="Natural Green">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-3.jpg')" alt="Natural Green">
                     <h6>Natural Green (Original Color Tatami)</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-1.jpg" alt="Stripes Blue">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-1.jpg')" alt="Stripes Blue">
                     <h6>Stripes Blue</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-6.jpg" alt="Dark Brown">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-6.jpg')" alt="Dark Brown">
                     <h6>Dark Brown</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-4.jpg" alt="Light Brown">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-4.jpg')" alt="Light Brown">
                         <h6>Light Brown</h6>
                     </div>
             </div>
             <div class="row py-3">
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-7.jpg" alt="Dark Blue">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-7.jpg')" alt="Dark Blue">
                     <h6>Dark Blue</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-5.jpg" alt="Light Blue">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-5.jpg')" alt="Light Blue">
                     <h6>Light Blue</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-2.jpg" alt="Natural Soft">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-2.jpg')" alt="Natural Soft">
                     <h6>Natural Soft</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Igusa-8.jpg" alt="Crimson Red">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Igusa-8.jpg')" alt="Crimson Red">
                     <h6>Crimson Red</h6>
                 </div>
             </div>
@@ -85,43 +86,43 @@
             </h3>
             <div class="row py-3">
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-5.jpg" alt="Brown Matte">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Pita-5.jpg')" alt="Brown Matte">
                     <h6>Brown Matte</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-1.jpg" alt="Brown Line 10 cm">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Pita-1.jpg')" alt="Brown Line 10 cm">
                     <h6>Brown Line 10 cm</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-6.jpg" alt="Brown Motive 7 cm">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Pita-6.jpg')" alt="Brown Motive 7 cm">
                     <h6>Brown Motive 7 cm</h6>
                 </div>
 
                 <div class="col-md-3">
-                    <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-2.jpg" alt="Green Motive 7 cm">
+                    <img class="img-fluid rounded-4" src="@asset('images/site/Pita-2.jpg')" alt="Green Motive 7 cm">
                     <h6>Green Motive 7 cm</h6>
                 </div>
             </div>
             <div class="row py-3">
                 <div class="col-md-3">
-                <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-7.jpg" alt="Blue Matte">
+                <img class="img-fluid rounded-4" src="@asset('images/site/Pita-7.jpg')" alt="Blue Matte">
                 <h6>Blue Matte</h6>
                 </div>
 
                 <div class="col-md-3">
-                <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-3.jpg" alt="Blue Line 10 cm">
+                <img class="img-fluid rounded-4" src="@asset('images/site/Pita-3.jpg')" alt="Blue Line 10 cm">
                 <h6>Blue Line 10 cm</h6>
                 </div>
 
                 <div class="col-md-3">
-                <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-8.jpg" alt="Green Line 10 cm">
+                <img class="img-fluid rounded-4" src="@asset('images/site/Pita-8.jpg')" alt="Green Line 10 cm">
                 <h6>Green Line 10 cm</h6>
                 </div>
 
                 <div class="col-md-3">
-                <img class="img-fluid rounded-4" src="https://tatamiindonesia.id/wp-content/uploads/2024/02/Pita-4.jpg" alt="Blue Motive 7 cm">
+                <img class="img-fluid rounded-4" src="@asset('images/site/Pita-4.jpg')" alt="Blue Motive 7 cm">
                 <h6>Blue Motive 7 cm</h6>
                 </div>
             </div>

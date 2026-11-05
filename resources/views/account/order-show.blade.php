@@ -1,5 +1,7 @@
 @extends('account.layout')
 
+@php $hero = ['title' => 'Detail Pesanan', 'crumbs' => ['Akun Saya' => route('account.index'), 'Pesanan Saya' => route('account.orders'), $order->order_number => null]]; @endphp
+
 @section('account')
     @php
         // Pesan untuk customer per status
@@ -13,7 +15,7 @@
     @endphp
 
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-        <h1 class="h3 fw-bold mb-0 notranslate">{{ $order->order_number }}</h1>
+        <h2 class="h3 fw-bold mb-0 notranslate">{{ $order->order_number }}</h2>
         <a href="{{ route('account.orders') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Pesanan Saya</a>
     </div>
 

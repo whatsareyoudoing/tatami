@@ -1,8 +1,8 @@
 @extends('account.layout')
 
-@section('account')
-    <h1 class="h3 fw-bold mb-4">Ubah Profil & Password</h1>
+@php $hero = ['title' => 'Ubah Profil & Password', 'crumbs' => ['Akun Saya' => route('account.index'), 'Ubah Profil & Password' => null]]; @endphp
 
+@section('account')
     {{-- Dua form terpisah, error-nya juga dipisah (error bag 'profile' dan 'password') --}}
     <form action="{{ route('account.profile') }}" method="POST">
         @csrf
@@ -13,7 +13,7 @@
                 @php $profileErrors = $errors->getBag('profile'); @endphp
                 <div class="col-md-6">
                     <label for="name" class="form-label">Nama Lengkap</label>
-                    <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" autocomplete="name"
+                    <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" autocomplete="name" placeholder="Masukkan nama lengkap"
                            @class(['form-control', 'is-invalid' => $profileErrors->has('name')])>
                     @if ($profileErrors->has('name'))
                         <div class="invalid-feedback">{{ $profileErrors->first('name') }}</div>
@@ -49,6 +49,7 @@
                     <div class="col-md-4">
                         <label for="{{ $field }}" class="form-label">{{ $label }}</label>
                         <input type="password" id="{{ $field }}" name="{{ $field }}" autocomplete="{{ $autocomplete }}"
+                               placeholder="{{ str_starts_with($label, 'Ulangi') ? ucfirst(strtolower($label)) : 'Masukkan ' . strtolower($label) }}"
                                @class(['form-control', 'is-invalid' => $passwordErrors->has($field)])>
                         @if ($passwordErrors->has($field))
                             <div class="invalid-feedback">{{ $passwordErrors->first($field) }}</div>

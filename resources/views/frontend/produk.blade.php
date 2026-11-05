@@ -3,6 +3,9 @@
 @section('title', $categoryLabel ? "Produk {$categoryLabel}" : 'Produk')
 
 @section('content')
+    <x-page-hero :title="$categoryLabel ?? 'Produk'"
+                 :crumbs="$categoryLabel ? ['Produk' => route('shop.index'), $categoryLabel => null] : ['Produk' => null]" />
+
     <div class="container mt-4 mb-5">
         {{-- Filter kategori + urutan --}}
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-2">
@@ -28,10 +31,6 @@
                 <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">Terapkan</button></noscript>
             </form>
         </div>
-
-        @if ($categoryLabel)
-            <h1 class="h4 fw-bold color-tatami mt-3 mb-0">{{ $categoryLabel }}</h1>
-        @endif
 
         <div class="row">
             @forelse ($products as $product)

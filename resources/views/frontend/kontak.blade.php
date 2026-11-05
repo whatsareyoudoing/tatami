@@ -3,6 +3,7 @@
 @section('title', 'Kontak')
 
 @section('content')
+    <x-page-hero title="Kontak" :crumbs="['Kontak' => null]" />
 {{-- navbar --}}
 
 {{-- content --}}
@@ -10,9 +11,9 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h1 class="fw-bold">
+                    <h2 class="fw-bold">
                         Jangan ragu untuk bertanya kami siap melayani Anda dengan sepenuh hati.
-                    </h1>
+                    </h2>
                     <p class="text-justify">
                         Central Industrial Park (CIP), Blok Gamma No. 09 (Jl. Raya Lingkar Timur Km. 4), Desa Kemiri, Sidoarjo, Jawa Timur, 61234
                     </p>
@@ -23,16 +24,16 @@
                 <div class="col-12 col-md-6">
                     <form action="" method="post">
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                            <label for="kontak-nama" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="kontak-nama" placeholder="Masukkan nama">
                         </div>
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                            <label for="kontak-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="kontak-email" placeholder="Masukkan email">
                         </div>
                         <div class="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label">Pesan</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <label for="kontak-pesan" class="form-label">Pesan</label>
+                            <textarea class="form-control" id="kontak-pesan" rows="3" placeholder="Masukkan pesan"></textarea>
                         </div>
                         <button class="btn btn-tatami">Kirim</button>
                     </form>
