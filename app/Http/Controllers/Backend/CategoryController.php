@@ -40,7 +40,14 @@ class CategoryController extends Controller implements HasMiddleware
     public function store(CategoryRequest $request)
     {
         $image = $this->imageOptimizer->store($request->file('image')->getRealPath(), 'categories');
-        Category::create([...$request->safe()->only(['name', 'slug']), 'image' => $image]);
+
+        // Insert gagal (misalnya slug bentrok) -> gambar yang baru disimpan ikut dihapus
+        try {
+            Category::create([...$request->safe()->only(['name', 'slug']), 'image' => $image]);
+        } catch (\Throwable $e) {
+            $this->imageOptimizer->delete($image);
+            throw $e;
+        }
 
         return redirect()->route('category.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
@@ -58,7 +65,12 @@ class CategoryController extends Controller implements HasMiddleware
             $data['image'] = $this->imageOptimizer->store($request->file('image')->getRealPath(), 'categories');
         }
 
-        $category->update($data);
+        try {
+            $category->update($data);
+        } catch (\Throwable $e) {
+            isset($data['image']) && $this->imageOptimizer->delete($data['image']);
+            throw $e;
+        }
 
         // Gambar lama dihapus setelah gambar baru tersimpan
         if (isset($data['image']) && $oldImage) {
