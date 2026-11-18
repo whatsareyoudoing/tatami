@@ -14,7 +14,11 @@
     {{-- Halaman cukup mengisi @section('content'); navbar dan footer otomatis --}}
     @include('partials.frontend.navbar')
 
-    @yield('content')
+    <main id="content">
+        @yield('content')
+    </main>
+    {{-- Dijalankan sebelum footer & script lain supaya elemen sudah tersembunyi sebelum sempat tampil --}}
+    <script src="@asset('js/frontend.js')"></script>
 
     @include('partials.frontend.footer')
 

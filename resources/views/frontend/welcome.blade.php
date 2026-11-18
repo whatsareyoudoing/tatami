@@ -6,7 +6,7 @@
 
 {{-- content --}}
     <div class="container-fluid bg-light">
-        <div class="container d-flex justify-content-center">
+        <div class="container d-flex justify-content-center" data-reveal="down">
             <img src="@asset('images/site/welcome-image-New.jpg')" class="img-fluid" alt="...">
         </div>
     </div>
@@ -73,7 +73,7 @@
             <div class="row">
                 @foreach ($kategori as $item)
                     <div class="col-6 col-lg-2 p-4">
-                        <a href="{{ route('shop.index', ['kategori' => $item->slug]) }}" class="text-decoration-none text-reset">
+                        <a href="{{ route('shop.index', ['kategori' => $item->slug]) }}" class="text-decoration-none text-reset category-tile">
                             <div class="d-flex justify-content-center flex-column text-center p-2">
                                 @if ($item->thumb_url)
                                     <img src="{{ $item->thumb_url }}" alt="{{ $item->name }}" class="img-fluid" loading="lazy">

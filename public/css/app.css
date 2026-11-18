@@ -10,6 +10,8 @@
     background-color: #245237;
     color: #ffffff;
 }
+.btn-tatami { transition: background-color .3s ease, transform .4s var(--ease-smooth), box-shadow .4s var(--ease-smooth); }
+.btn-tatami:hover { transform: translateY(-2px); box-shadow: 0 .4rem .8rem rgba(36, 82, 55, .25); }
 .btn:hover {
     color: #ffffff !important;
     background-color: #239452 !important;
@@ -20,13 +22,16 @@
 }
 
 /* ---------- Toko ---------- */
-.product-card { transition: box-shadow .2s ease; }
-.product-card:hover { box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1); }
+.product-card { transition: box-shadow .4s var(--ease-smooth), transform .4s var(--ease-smooth); }
+.product-card:hover { box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .12); transform: translateY(-4px); }
+.product-card img { transition: transform .8s var(--ease-smooth); }
+.product-card:hover img { transform: scale(1.06); }
 .product-card .ratio > .product-card-badges { width: auto; height: auto; }
 
 /* Stok habis: kartu tetap tampil tapi tidak bisa diklik */
 .product-card-disabled { cursor: not-allowed; }
-.product-card-disabled:hover { box-shadow: none; }
+.product-card-disabled:hover { box-shadow: none; transform: none; }
+.product-card-disabled:hover img { transform: none; }
 .product-card-disabled img,
 .product-card-disabled .card-body { filter: grayscale(1); opacity: .55; }
 
@@ -60,8 +65,16 @@
 }
 
 /* ---------- Artikel ---------- */
-.article-card { transition: transform .15s; }
-.article-card:hover { transform: translateY(-3px); }
+.article-card { transition: transform .4s var(--ease-smooth), box-shadow .4s var(--ease-smooth); overflow: hidden; }
+.article-card:hover { transform: translateY(-4px); box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .12); }
+.article-card .article-card-img { transition: transform .8s var(--ease-smooth); }
+.article-card:hover .article-card-img { transform: scale(1.06); }
+
+/* Kategori di beranda */
+.category-tile img { transition: transform .3s; }
+.category-tile:hover img { transform: scale(1.1); }
+.category-tile p { transition: color .2s ease; }
+.category-tile:hover p { color: #245237; }
 .article-card-img { height: 200px; object-fit: cover; background: #e8f3ec; }
 .article-card-img-square { height: auto; aspect-ratio: 1 / 1; }
 
@@ -109,6 +122,39 @@
     margin: 0;
     max-width: 900px;
     text-shadow: 0 2px 12px rgba(0, 0, 0, .25);
+}
+
+:root { --ease-smooth: cubic-bezier(.22, 1, .36, 1); }
+
+.page-hero .breadcrumb,
+.page-hero-title { animation: hero-in 1s var(--ease-smooth) .1s both; }
+.page-hero-title { animation-delay: .25s; }
+@keyframes hero-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------- Pergantian halaman: isi memudar masuk saat dibuka, memudar keluar saat link diklik
+   (class page-leaving dipasang oleh js/frontend.js) ---------- */
+#content { animation: page-in .6s var(--ease-smooth) backwards; transition: opacity .25s ease; }
+#content.page-leaving { opacity: 0; }
+@keyframes page-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ---------- Animasi muncul saat discroll (class dipasang oleh js/frontend.js),
+   meniru animasi fadeInUp / fadeInDown Elementor di tatamiindonesia.id ---------- */
+.reveal { opacity: 0; }
+.reveal.is-visible { animation: fade-in-up 1.25s var(--reveal-delay, 0ms) both; }
+.reveal-down.is-visible { animation-name: fade-in-down; }
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translate3d(0, 100%, 0); }
+    to { opacity: 1; transform: none; }
+}
+@keyframes fade-in-down {
+    from { opacity: 0; transform: translate3d(0, -100%, 0); }
+    to { opacity: 1; transform: none; }
 }
 
 /* Detail artikel */
