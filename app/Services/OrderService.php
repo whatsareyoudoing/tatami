@@ -92,16 +92,14 @@ class OrderService
                 foreach ($order->items as $item) {
                     $variant = $variants->get($item->product_variant_id);
 
-                    if (!$variant) {
-                        throw new OrderException("{$item->displayName()} sudah dihapus dari produk, stok tidak bisa dikurangi.");
-                    }
-                    if ($variant->stok < $item->quantity) {
+                    // Varian yang sudah dihapus admin tidak punya stok lagi: dilewati, pesanan tetap bisa dikirim
+                    if ($variant && $variant->stok < $item->quantity) {
                         throw new OrderException("Stok {$item->displayName()} tinggal {$variant->stok}, pesanan ini butuh {$item->quantity}. Perbarui stok produk terlebih dahulu.");
                     }
                 }
 
                 foreach ($order->items as $item) {
-                    $variants->get($item->product_variant_id)->decrement('stok', $item->quantity);
+                    $variants->get($item->product_variant_id)?->decrement('stok', $item->quantity);
                 }
             }
 

@@ -10,11 +10,17 @@
                 <p class="text-muted small mb-0">Masuk ke akun Anda</p>
             </div>
 
+            {{-- Misalnya "Password berhasil diganti" setelah reset password --}}
+            @include('partials.admin.flash')
+
             <form action="{{ url('/login') }}" method="POST">
                 @csrf {{-- WAJIB untuk keamanan dari serangan CSRF --}}
 
                 <x-admin.input name="username" label="Username atau Email" required autofocus autocomplete="username" />
-                <x-admin.input name="password" type="password" label="Password" required autocomplete="current-password" wrapper="mb-4" />
+                <x-admin.input name="password" type="password" label="Password" required autocomplete="current-password" wrapper="mb-2" />
+                <div class="text-end small mb-4">
+                    <a href="{{ route('password.request') }}" class="text-tatami">Lupa password?</a>
+                </div>
 
                 <button type="submit" class="btn btn-tatami w-100 py-2">
                     <i class="fas fa-sign-in-alt me-1"></i> Masuk

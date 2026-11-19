@@ -68,7 +68,7 @@
                                         {{-- Peringatan dini sebelum admin menekan "Dikirim" --}}
                                         <td class="text-center">
                                             @if (!$item->variant)
-                                                <span class="badge text-bg-danger" title="Warna ini sudah dihapus dari produk">Dihapus</span>
+                                                <span class="badge text-bg-danger" title="Varian ini sudah dihapus dari produk, stoknya tidak ikut dipotong saat dikirim">Dihapus</span>
                                             @elseif ($item->variant->stok < $item->quantity)
                                                 <span class="badge text-bg-danger" title="Stok tidak cukup">{{ $item->variant->stok }}</span>
                                             @else

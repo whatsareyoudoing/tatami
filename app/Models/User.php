@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Mail\PasswordResetMail;
 use App\Services\EmailVerificationService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 
 // MustVerifyEmail: route dengan middleware 'verified' hanya bisa dibuka setelah email_verified_at terisi
 class User extends Authenticatable implements MustVerifyEmail
@@ -76,6 +78,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification(): void
     {
         app(EmailVerificationService::class)->send($this);
+    }
+
+    // Bawaan Laravel mengirim notifikasi berbahasa Inggris; aplikasi ini memakai email sendiri
+    public function sendPasswordResetNotification($token): void
+    {
+        Mail::to($this->email)->send(new PasswordResetMail($this, route('password.reset', ['token' => $token, 'email' => $this->email])));
     }
 
     // 🔐 PERMISSION CHECK

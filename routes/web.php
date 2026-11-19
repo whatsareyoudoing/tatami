@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountOrderController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Backend\ArticleController as BackendArticleController;
 use App\Http\Controllers\Backend\CategoryController;
@@ -41,6 +42,12 @@ Route::middleware('guest')->group(function () {
     // Pendaftaran customer (batas per IP diatur di RegisterController)
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::post('/register', [RegisterController::class, 'store']);
+
+    // Lupa password: link untuk membuat password baru dikirim ke email (berlaku 60 menit, lihat config/auth.php)
+    Route::get('/lupa-password', [PasswordResetController::class, 'index'])->name('password.request');
+    Route::post('/lupa-password', [PasswordResetController::class, 'send'])->middleware('throttle:5,1')->name('password.email');
+    Route::get('/atur-ulang-password/{token}', [PasswordResetController::class, 'edit'])->name('password.reset');
+    Route::post('/atur-ulang-password', [PasswordResetController::class, 'update'])->name('password.update');
 });
 
 Route::middleware(['auth', 'active'])->group(function () {

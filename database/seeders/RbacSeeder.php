@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class RbacSeeder extends Seeder
 {
@@ -63,7 +64,7 @@ class RbacSeeder extends Seeder
         }
 
         // Akun admin awal, hanya untuk instalasi baru. Kalau sudah ada admin (misalnya emailnya sudah
-        // diganti di hosting), seeder tidak membuat akun "admin/admin" baru saat dijalankan ulang.
+        // diganti di hosting), seeder tidak membuat akun admin baru saat dijalankan ulang.
         $adminRoleId = Role::where('name', 'admin')->value('id');
         if (User::whereHas('roles', fn ($q) => $q->whereKey($adminRoleId))->exists()) {
             return;
@@ -74,10 +75,15 @@ class RbacSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'username' => 'admin',
-                'password' => 'admin', // di-hash otomatis oleh cast 'hashed' di model User
+                // Acak, bukan password bawaan yang bisa ditebak. Di-hash otomatis oleh cast 'hashed' di model User.
+                'password' => $password = Str::random(16),
                 'status' => 'aktif',
             ]
         );
+
+        if ($admin->wasRecentlyCreated) {
+            $this->command?->warn("Password admin awal: {$password} (catat, lalu ganti setelah login)");
+        }
 
         $admin->roles()->syncWithoutDetaching([$adminRoleId]);
 

@@ -65,7 +65,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // WIB: tanggal pesanan, nomor invoice, dan jam di halaman mengikuti jam toko
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
